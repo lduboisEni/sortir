@@ -50,13 +50,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $active;
 
-    #[ORM\ManyToMany(targetEntity: Trip::class, inversedBy: 'participants')]
+    #[ORM\ManyToMany(targetEntity: Trip::class, mappedBy: 'users')]
     private $trips;
 
-    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Trip::class)]
+    #[ORM\OneToMany(mappedBy: 'organiser', targetEntity: Trip::class)]
     private $organisedTrips;
 
-    #[ORM\ManyToOne(targetEntity: Campus::class, inversedBy: 'participants')]
+    #[ORM\ManyToOne(targetEntity: Campus::class, inversedBy: 'campusUsers')]
     #[ORM\JoinColumn(nullable: false)]
     private $campus;
 
@@ -263,7 +263,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->organisedTrips->contains($organisedTrip)) {
             $this->organisedTrips[] = $organisedTrip;
-            $organisedTrip->setOrganisateur($this);
+            $organisedTrip->setOrganiser($this);
         }
 
         return $this;
@@ -273,8 +273,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->organisedTrips->removeElement($organisedTrip)) {
             // set the owning side to null (unless already changed)
-            if ($organisedTrip->getOrganisateur() === $this) {
-                $organisedTrip->setOrganisateur(null);
+            if ($organisedTrip->getOrganiser() === $this) {
+                $organisedTrip->setOrganiser(null);
             }
         }
 
