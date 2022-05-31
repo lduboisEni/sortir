@@ -11,7 +11,7 @@ class TripController extends AbstractController
     #[Route('/trip', name: 'app_trip')]
     public function index(): Response
     {
-        return $this->render('trip/index.html.twig', [
+        return $this->render('trip/login.html.twig', [
             'controller_name' => 'TripController',
         ]);
     }
