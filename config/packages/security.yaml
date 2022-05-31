@@ -17,6 +17,18 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            custom_authenticator: App\Security\AppAuthenticator
+            login_throttling: true
+                #3 tentatives maximum.
+                max_attempts: 3
+                #Durée à partir des 3 tentatives.
+                interval: '1 minute'
+                #use a custom rate limiter via its service ID.
+                limiter: app.my_login_rate_limiter
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
