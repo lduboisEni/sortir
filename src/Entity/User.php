@@ -38,12 +38,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private $phoneNumber;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $eMail;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $passWord;
-
     #[ORM\Column(type: 'boolean')]
     private $admin;
 

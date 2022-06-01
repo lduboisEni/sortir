@@ -2,17 +2,23 @@
 
 namespace App\Controller;
 
+use App\Repository\TripRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+#[Route('/trip', name: 'trip_')]
 class TripController extends AbstractController
 {
-    #[Route('/trip', name: 'app_trip')]
+    #[Route('/', name: 'home')]
     public function index(): Response
     {
-        return $this->render('trip/security.html.twig', [
-            'controller_name' => 'TripController',
+
+
+        return $this->render('trip/home.html.twig', [
+
         ]);
     }
+
 }

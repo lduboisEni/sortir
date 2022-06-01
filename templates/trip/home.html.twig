@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Accueil{% endblock %}
+
+{% block main %}
+    <div>
+        <h3>Date du jour : {{"now"|date("d/m/Y")}}</h3>
+    </div>
+
+
+{% endblock %}
