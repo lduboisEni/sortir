@@ -29,11 +29,11 @@ class EditProfileType extends AbstractType
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Téléphone :'
             ])
-            ->add('campus', Select::class, [
+            /*->add('campus', Select::class, [
                 'label' => 'Campus :',
                 'class' => 'App\Entity\Campus',
                 'choice_label' => 'name',
-            ])
+            ])*/
             ->add('password')
             ->add('password')
             ->add('Enregistrer', SubmitType::class)

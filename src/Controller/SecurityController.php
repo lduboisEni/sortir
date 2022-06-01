@@ -35,24 +35,26 @@ class SecurityController extends AbstractController
 
     }
 
-    #[Route(path: '/login/edit', name: 'profil_edit')]
+    #[Route(path: '/edit', name: 'edit')]
     public function editProfile(Request $request): Response
     {
         $user = $this->getUser();
-        $form =$this->createForm(EditProfileType::class, $user);
+        $profileForm =$this->createForm(EditProfileType::class, $user);
 
-        $form->handleRequest($request);
+        $profileForm->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if($profileForm->isSubmitted() && $profileForm->isValid()){
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
             $this->addFlash('message', 'Profil mis à jour');
-            return $this->redirectToRoute('trip_list');
+            return $this->redirectToRoute('trip_home');
         }
 
-        return $this->render('user/edit.html.twig');
+        return $this->render('user/edit.html.twig', [
+            'profileForm' => $profileForm->createView()
+        ]);
     }
 
 
