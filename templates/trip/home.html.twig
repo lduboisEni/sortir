@@ -5,6 +5,19 @@
 {% block main %}
     <div>
         <h3>Date du jour : {{"now"|date("d/m/Y")}}</h3>
+        <h3>Participant : {{app.user.pseudo}}</h3>
+    </div>
+
+    <div>
+        <h3>Filter les sorties</h3>
+        <label for="campus-select">Campus</label>
+        <select name="campus" id="campus-select">
+            <option>{{app.user.campus.name}}</option>
+            {%for campus in campusList%}
+            <option>{{campus.name}}</option>
+            {%endfor%}
+        </select>
+
     </div>
 
 
