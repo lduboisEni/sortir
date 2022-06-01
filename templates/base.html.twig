@@ -8,6 +8,11 @@
 
     </head>
     <body>
+        //récupération des messages flash de nos différentes pages
+        //boucle pour récupérer plusieurs messages si besoin
+        {% for message in app.flashes('message')%}
+        <h3>{{ message }}</h3>
+
         <header>
             {% block header %}
                 <img src="{{asset('img/logo-eni.png')}}" id="logo" alt="logo de l'Eni école"/>
