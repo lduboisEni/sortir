@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Form\model\Search;
+use App\Form\SearchType;
 use App\Repository\CampusRepository;
 use App\Entity\Trip;
 use App\Form\TripType;
@@ -40,11 +42,14 @@ class TripController extends AbstractController
 
     }
         #[Route('/', name: 'home')]
-        public function index(CampusRepository $campusRepository): Response
+        public function index(TripRepository $tripRepository): Response
         {
-            $campusList = $campusRepository ->findBy([], ["name" => "ASC"]);
+            $search = new Search();
+            $searchForm =$this->createForm(SearchType::class, $search);
+            $tripList = $tripRepository->findAll();
+
             return $this->render('trip/home.html.twig', [
-                'campusList' =>$campusList
+                'searchForm' => $searchForm->createView()
             ]);
         }
 

@@ -6,7 +6,7 @@ use App\Entity\Campus;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\String_;
 
-abstract class Search
+class Search
 {
     private Campus $campus;
     private String $nameContain;
