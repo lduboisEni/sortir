@@ -8,6 +8,10 @@
 
     </head>
     <body>
+    {#récupération des messages flash de nos différentes pages#}
+    {#boucle pour récupérer plusieurs messages si besoin#}
+    {#{% for message in app.flashes('message')%} <h3>{{ message }}</h3>#}
+
         <header>
             {% block header %}
                 <img src="{{asset('img/logo-eni.png')}}" id="logo" alt="logo de l'Eni école"/>
@@ -19,7 +23,7 @@
             {% block navbar %}
                 {%if app.user%}
                     <a href="" title="Villes">Villes</a> | <a href="" title="Campus">Campus</a> |
-                    <a href="{{path('trip_home')}}" title="Aller à l'accueil">Accueil</a> | <a href="" title="Mon profil">Mon profil</a> |
+                    <a href="{{path('trip_home')}}" title="Aller à l'accueil">Accueil</a> | <a href="{{path('edit')}}" title="Mon profil">Mon profil</a> |
                     <a href="{{path('logout')}}" title="Se déconnecter">Se déconnecter</a>
                 {%endif%}
             {% endblock %}

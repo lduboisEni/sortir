@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+{{ form_start(tripForm) }}
+    {{ form_row(tripForm.name) }}
+    {{ form_row(tripForm.startTime) }}
+    {{ form_row(tripForm.registrationTimeLimit) }}
+    {{ form_row(tripForm.maxRegistration) }}
+    {{ form_row(tripForm.lenght) }}
+    {{ form_row(tripForm.tripInfos) }}
+    {{ form_row(tripForm.campus) }}
+<button>Enregistrer</button>
+<button>Publier la sortie</button>
+<button>Annuler</button>
+{{ form_end(tripForm) }}
+
+{% endblock %}
