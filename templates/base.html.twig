@@ -24,7 +24,7 @@
             {% block navbar %}
                 {%if app.user%}
                     <a href="" title="Villes">Villes</a> | <a href="" title="Campus">Campus</a> |
-                    <a href="{{path('trip_list')}}" title="Aller à l'accueil">Accueil</a> | <a href="" title="Mon profil">Mon profil</a> |
+                    <a href="{{path('trip_home')}}" title="Aller à l'accueil">Accueil</a> | <a href="" title="Mon profil">Mon profil</a> |
                     <a href="{{path('logout')}}" title="Se déconnecter">Se déconnecter</a>
                 {%endif%}
             {% endblock %}
