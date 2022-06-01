@@ -10,12 +10,19 @@
     <body>
         <header>
             {% block header %}
-                <h2>Sortir avec l'ENI</h2>
+                <img src="{{asset('img/logo-eni.png')}}" id="logo" alt="logo de l'Eni école"/>
+                <h2>Sortir.com</h2>
             {% endblock %}
         </header>
 
         <nav>
-            {% block navbar %}{% endblock %}
+            {% block navbar %}
+                {%if app.user%}
+                    <a href="" title="Villes">Villes</a> | <a href="" title="Campus">Campus</a> |
+                    <a href="{{path('trip_home')}}" title="Aller à l'accueil">Accueil</a> | <a href="" title="Mon profil">Mon profil</a> |
+                    <a href="{{path('logout')}}" title="Se déconnecter">Se déconnecter</a>
+                {%endif%}
+            {% endblock %}
         </nav>
 
         {% block main %}{% endblock %}
