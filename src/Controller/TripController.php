@@ -11,12 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/trip', name: 'trip_')]
 class TripController extends AbstractController
 {
-    #[Route('/', name: 'list')]
+    #[Route('/', name: 'home')]
     public function index(): Response
     {
 
 
-        return $this->render('trip/list.html.twig', [
+        return $this->render('trip/home.html.twig', [
 
         ]);
     }
