@@ -1,24 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}} - Accueil{% endblock %}
+{% block title %}{{ parent() }} - Accueil{% endblock %}
 
 {% block main %}
-    <div>
-        <h3>Date du jour : {{"now"|date("d/m/Y")}}</h3>
-        <h3>Participant : {{app.user.pseudo}}</h3>
+    <div id="date-user-pseudo">
+        <h3>Date du jour : {{ "now"|date("d/m/Y") }}</h3>
+        <h3>Participant : {{ app.user.pseudo }}</h3>
     </div>
 
-    <div>
+    <div id="filter-zone">
         <h3>Filter les sorties</h3>
+
         <label for="campus-select">Campus</label>
         <select name="campus" id="campus-select">
-            <option>{{app.user.campus.name}}</option>
-            {%for campus in campusList%}
-            <option>{{campus.name}}</option>
-            {%endfor%}
+            <option>{{ app.user.campus.name }}</option>
+            {% for campus in campusList %}
+                <option>{{ campus.name }}</option>
+            {% endfor %}
         </select>
+        <br>
 
+        <label for="word-search">Le nom de la sortie contient :</label>
+        <input type="search" id="word-search" name="rechercher" placeholder="search">
+        <br>
+
+        <label for="date-choice"> Entre
+            <input type="date">
+            et
+            <input type="date">
+        </label>
+        <br><br>
+
+        <input type="checkbox" id="trip-organiser">
+        <label for="trip-organiser">Sorties dont je suis l'organisateur/trice</label>
+        <br>
+        <input type="checkbox" id="trip-registered">
+        <label for="trip-registered">Sorties auxquelles je suis inscrit/e</label>
+        <br>
+        <input type="checkbox" id="trip-unregistered">
+        <label for="trip-unregistered">Sorties auxquelles je ne suis pas inscrit/e</label>
+        <br>
+        <input type="checkbox" id="passed-trip">
+        <label for="passed-trip">Sorties passées</label>
+
+        <br>
+        <input type="button" value="Rechercher" name="search">
     </div>
 
+    <div>
+
+    </div>
 
 {% endblock %}
