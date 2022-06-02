@@ -34,7 +34,7 @@
             {% endif %}
 
             {% for user in trip.users %}
-                {% if(app.user.id != user.id) and (trip.state.description == "Ouverte")%}
+                {% if(app.user.id != user.id) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration)%}
                     <button onclick="" id="suscribe">S'incrire</button>
                 {% endif %}
             {% endfor %}
