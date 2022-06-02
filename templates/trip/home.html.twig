@@ -17,7 +17,7 @@
         <div>
             <h4>{{ trip.name }}
                 {% for user in trip.users %}
-                    {% if(user.id) %}
+                    {% if(app.user.id == user.id) %}
                         - Inscrit
                     {% endif %}
                 {% endfor %}
@@ -30,27 +30,27 @@
             <p>Nombre d'inscrits : {{ trip.users.count() }}/{{ trip.maxRegistration }}</p>
 
             {% if (trip.state.description != "Créée") %}
-                <button onclick="" id="display">Afficher</button>
+                <button onclick="location.href= '{{ path('trip_display', {'id' : trip.id}) }}'" id="displayTrip">Afficher</button>
             {% endif %}
 
             {% for user in trip.users %}
-                {% if(not user.id) and (not trip.organiser.id) and (trip.state.description == "Ouverte")%}
-                    <button onclick="">S'incrire</button>
+                {% if(app.user.id != user.id) and (trip.state.description == "Ouverte")%}
+                    <button onclick="" id="suscribe">S'incrire</button>
                 {% endif %}
             {% endfor %}
 
             {% for user in trip.users %}
-                {% if(user.id) and (not trip.organiser.id) and (trip.state.description == "Ouverte" or "Clôturée")%}
-                    <button onclick="">Se désinscrire</button>
+                {% if(app.user.id == user.id) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or "Clôturée")%}
+                    <button onclick="" id="unSubscribe">Se désinscrire</button>
                 {% endif %}
             {% endfor %}
 
-            {% if (trip.organiser.id) and (trip.state.description == "Créée") %}
-                <button onclick="" id="display">Publier</button>
+            {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
+                <button onclick="" id="publishTrip">Publier</button>
             {% endif %}
 
-            {% if (trip.organiser.id) and (trip.state.description == "Ouverte") %}
-                <button onclick="" id="display">Annuler</button>
+            {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Ouverte") %}
+                <button onclick="" id="cancelTrip">Annuler</button>
             {% endif %}
         </div>
     {% endfor %}
