@@ -41,7 +41,7 @@ class Trip
     private $state;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'trips')]
-    private $users;
+    private ArrayCollection $users;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'organisedTrips')]
     #[ORM\JoinColumn(nullable: false)]

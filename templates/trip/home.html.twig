@@ -13,26 +13,19 @@
         {{ form_end(searchForm) }}
     </div>
 
-    <div id="trip-display">
-        <table>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Clôture des inscriptions le</th>
-                <th>Nb d'inscrits/nb de places</th>
-                <th>Etat de la sortie</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
-            </tr>
-            {% for trip in tripList %}
-                <tr>
-                    <td>{{ trip.name }}</td>
-                    <td>{{ trip.start_time|date("d,m,Y H") }}h{{ trip.start_time|date("i") }}</td>
-                    <td>{{trip.registration_number}}{{ trip.max_registration }}</td>
-                </tr>
+    {% for trip in tripList %}
+    <div>
+        <h4>{{trip.name}}
+            {%for user in trip.users%}
+                {%if(app.user.id == user.id) %}
+                    - Inscrit
+                {%endif%}
             {% endfor %}
-        </table>
-    </div>
+        </h4>
+        <p>Organisateur : {{trip.organiser.name}}</p>
+        <p>Date de la sortie : le {{trip.startTime|date("d M Y")}} à {{trip.startTime|date("H",'h',"i")}}</p>
+        <p>Nombre d'inscrits : {{trip.users.count()}}/{{trip.maxRegistration}}</p>
 
+    </div>
+    {% endfor %}
 {% endblock %}
