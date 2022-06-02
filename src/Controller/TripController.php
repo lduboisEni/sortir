@@ -74,7 +74,6 @@ class TripController extends AbstractController
 
             $tripList =$tripRepository->findAll();
 
-
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
 
