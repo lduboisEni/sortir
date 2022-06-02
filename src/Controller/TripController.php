@@ -11,6 +11,7 @@ use App\Form\TripType;
 use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use App\Repository\TripRepository;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,6 +91,17 @@ class TripController extends AbstractController
               'tripList' => $tripList
             ]);
        }
+
+    #[Route('/display/{id}', name: 'display')]
+    public function display($id, TripRepository $tripRepository): Response
+    {
+
+        $trip = $tripRepository->find($id);
+        return $this->render('trip/display.html.twig', [
+            'id' => $id,
+            'trip' => $trip
+        ]);
+    }
 
 
 }
