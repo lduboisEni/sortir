@@ -25,33 +25,34 @@ class TripController extends AbstractController
         $trip = new Trip();
         $trip
             ->setOrganiser($this->getUser())
-            ->setPlace($placeRepository->findOneBy(array('name' => "Cinema")));
+            ->setPlace($placeRepository->findOneBy(array('name' => "Cinema")))
+            ->addUser($this->getUser());
 
         //création du formulaire
         $tripForm = $this->createForm(TripType::class, $trip);
         $tripForm->handleRequest($request);
-        dump('coucou');
+
         //traitement du formulaire
         if ($tripForm->isSubmitted() && $tripForm->isValid()) {
-            dump('bonjour');
+
             //si bouton 'save'
-            dump($tripForm->get('save')->isClicked());
             if ($tripForm->get('save')->isClicked()) {
-                //l'état de la sortie passe à "ouverte"
+                //l'état de la sortie passe à "Créée"
                 $state = $stateRepository->findOneBy(array('description'=>"Créée"));
                 $trip->setState($state);
+
                 $tripRepository->add($trip, true);
                 $this->addFlash("success", "Ta proposition de sortie est enregistrée!");
-                dump('salut');
             }
 
             //si bouton 'publish'
-            if ($request->get('publish')){
+            if ($tripForm->get('publish')->isClicked()){
+                //l'état de la sortie passe à "Ouverte"
                 $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
                 $trip->setState($state);
+
                 $tripRepository->add($trip, true);
                 $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
-                dump('hello');
             }
 
             return $this->redirectToRoute("trip_home");
