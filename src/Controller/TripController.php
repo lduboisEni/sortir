@@ -88,12 +88,10 @@ class TripController extends AbstractController
     #[Route('/display/{id}', name: 'display')]
     public function display($id, TripRepository $tripRepository): Response
     {
-        $newTrip = new Trip();
-        $users = $newTrip->getUsers();
+
         $trip = $tripRepository->find($id);
         return $this->render('trip/display.html.twig', [
             'id' => $id,
-            'users' => $users,
             'trip' => $trip
         ]);
     }
