@@ -35,8 +35,8 @@
         <tbody>
         {% for user in trip.users %}
         <tr>
-            <td>{{user.pseudo}}</td>
-            <td>{{user.name}}</td>
+            <td><a href="{{path('otherProfile', {'id':user.id})}}">{{user.pseudo}}</a></td>
+            <td><a href="{{path('otherProfile', {'id':user.id})}}">{{user.name}}</a></td>
         </tr>
         {%endfor%}
         </tbody>
