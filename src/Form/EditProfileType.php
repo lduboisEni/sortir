@@ -2,9 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\User;
+use App\Repository\CampusRepository;
 use Doctrine\ORM\Query\Expr\Select;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,17 +30,23 @@ class EditProfileType extends AbstractType
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom :'
             ])
-
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Téléphone :'
             ])
-            /*->add('campus', Select::class, [
+            ->add('email', EmailType::class, [
+                'label' => 'Email :'
+            ])
+            ->add('campus', EntityType::class, [
                 'label' => 'Campus :',
-                'class' => 'App\Entity\Campus',
+                'class' => Campus::class,
                 'choice_label' => 'name',
-            ])*/
-            ->add('password')
-            ->add('password')
+            ])
+            ->add('password', EntityType::class,[
+                'label' => 'Mot de passe :'
+            ])
+            //->add('passwordConfirmation', TextType::class, [
+            //    'label' => 'Confirmation :'
+            //])
             ->add('Enregistrer', SubmitType::class)
         ;
     }
