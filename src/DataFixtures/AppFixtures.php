@@ -152,23 +152,23 @@ class AppFixtures extends Fixture
 
         //Je crée 3 users avec password connu
 
-        $user = new User();
-
-        $plainPassword = "lea";
-        $hashed = $this->hasher->hashPassword($user, $plainPassword);
-
-        $user
-            ->setName("Dubois")
-            ->setFirstname("Léa")
-            ->setPseudo("Fluff")
-            ->setPhoneNumber($this->faker->phoneNumber)
-            ->setEMail("lea.dubois@gmail.com")
-            ->setPassWord($hashed)
-            ->setActive(1)
-            ->setAdmin(0)
-            ->setCampus($this->faker->randomElement($campusList));
-
-        $manager->persist($user);
+//        $user = new User();
+//
+//        $plainPassword = "lea";
+//        $hashed = $this->hasher->hashPassword($user, $plainPassword);
+//
+//        $user
+//            ->setName("Dubois")
+//            ->setFirstname("Léa")
+//            ->setPseudo("Fluff")
+//            ->setPhoneNumber($this->faker->phoneNumber)
+//            ->setEMail("lea.dubois@gmail.com")
+//            ->setPassWord($hashed)
+//            ->setActive(1)
+//            ->setAdmin(0)
+//            ->setCampus($this->faker->randomElement($campusList));
+//
+//        $manager->persist($user);
 
         $user = new User();
 
@@ -188,26 +188,26 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
 
-        $user = new User();
-
-        $plainPassword = "soline";
-        $hashed = $this->hasher->hashPassword($user, $plainPassword);
-
-        $user
-            ->setName("Foret")
-            ->setFirstname("Soline")
-            ->setPseudo("Soso")
-            ->setPhoneNumber($this->faker->phoneNumber)
-            ->setEMail("soline.foret@gmail.com")
-            ->setPassWord($hashed)
-            ->setActive(1)
-            ->setAdmin(0)
-            ->setCampus($this->faker->randomElement($campusList));
-
-        $manager->persist($user);
-
-        $manager->flush();
-    }
+//        $user = new User();
+//
+//        $plainPassword = "soline";
+//        $hashed = $this->hasher->hashPassword($user, $plainPassword);
+//
+//        $user
+//            ->setName("Foret")
+//            ->setFirstname("Soline")
+//            ->setPseudo("Soso")
+//            ->setPhoneNumber($this->faker->phoneNumber)
+//            ->setEMail("soline.foret@gmail.com")
+//            ->setPassWord($hashed)
+//            ->setActive(1)
+//            ->setAdmin(0)
+//            ->setCampus($this->faker->randomElement($campusList));
+//
+//        $manager->persist($user);
+//
+//        $manager->flush();
+       }
 
     public function addStates(ObjectManager $manager)
     {
