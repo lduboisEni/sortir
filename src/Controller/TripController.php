@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\model\Search;
 use App\Form\SearchType;
 use App\Entity\State;
@@ -11,6 +12,7 @@ use App\Form\TripType;
 use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use App\Repository\TripRepository;
+use App\Repository\UserRepository;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,6 +72,7 @@ class TripController extends AbstractController
         public function index(Request $request, TripRepository $tripRepository): Response
         {
             $search = new Search();
+            dump('1');
 
             $searchForm =$this->createForm(SearchType::class, $search);
             $searchForm->handleRequest($request);
@@ -94,5 +97,33 @@ class TripController extends AbstractController
         ]);
     }
 
+    public function subscribe($idTrip, TripRepository $tripRepository)
+    {
+        //je récupère mon user en cours
+        $user = $this->getUser();
+        //je récupère la sortie qui a été choisie
+        $trip = $tripRepository->findOneBy($idTrip);
+
+        $trip->getUsers()->add($user);
+        $tripRepository->add($trip, true);
+
+        $this->addFlash("success", "Félicitations vous êtes inscrit !");
+
+    }
+
+    public function cancelSubscribe($idTrip, TripRepository $tripRepository)
+    {
+        //je récupère mon user en cours
+        $user = $this->getUser();
+        //je récupère la sortie qui a été choisie
+        $trip = $tripRepository->findOneBy($idTrip);
+
+        //enlever le participant de la liste
+        //mise à jour de la bdd
+        $trip->getUsers()->remove($user);
+        $tripRepository->add($trip, true);
+
+        $this->addFlash("success", "Vous êtes bien désinscrit !");
+    }
 
 }
