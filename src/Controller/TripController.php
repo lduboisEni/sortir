@@ -9,6 +9,7 @@ use App\Form\TripType;
 use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use App\Repository\TripRepository;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/trip', name: 'trip_')]
 class TripController extends AbstractController
 {
-       #[Route('/create', name: 'create')]
+    #[Route('/create', name: 'create')]
     public function create(TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
         //création d'une nouvelle sortie
@@ -38,7 +39,7 @@ class TripController extends AbstractController
             //si bouton 'save'
             if ($tripForm->get('save')->isClicked()) {
                 //l'état de la sortie passe à "Créée"
-                $state = $stateRepository->findOneBy(array('description'=>"Créée"));
+                $state = $stateRepository->findOneBy(array('description' => "Créée"));
                 $trip->setState($state);
 
                 $tripRepository->add($trip, true);
@@ -46,9 +47,9 @@ class TripController extends AbstractController
             }
 
             //si bouton 'publish'
-            if ($tripForm->get('publish')->isClicked()){
+            if ($tripForm->get('publish')->isClicked()) {
                 //l'état de la sortie passe à "Ouverte"
-                $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
+                $state = $stateRepository->findOneBy(array('description' => "Ouverte"));
                 $trip->setState($state);
 
                 $tripRepository->add($trip, true);
@@ -62,14 +63,28 @@ class TripController extends AbstractController
             ['tripForm' => $tripForm->createView()]);
 
     }
-        #[Route('/', name: 'home')]
-        public function index(CampusRepository $campusRepository): Response
-        {
-            $campusList = $campusRepository ->findBy([], ["name" => "ASC"]);
-            return $this->render('trip/home.html.twig', [
-                'campusList' =>$campusList
-            ]);
-        }
+
+    #[Route('/', name: 'home')]
+    public function index(CampusRepository $campusRepository): Response
+    {
+        $campusList = $campusRepository->findBy([], ["name" => "ASC"]);
+        return $this->render('trip/home.html.twig', [
+            'campusList' => $campusList
+        ]);
+    }
+
+    #[Route('/display/{id}', name: 'display')]
+    public function display($id, TripRepository $tripRepository): Response
+    {
+        $newTrip = new Trip();
+        $users = $newTrip->getUsers();
+        $trip = $tripRepository->find($id);
+        return $this->render('trip/display.html.twig', [
+            'id' => $id,
+            'users' => $users,
+            'trip' => $trip
+        ]);
+    }
 
 
 }

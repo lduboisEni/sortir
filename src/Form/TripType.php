@@ -36,7 +36,7 @@ class TripType extends AbstractType
                 'label' => "Nombre de places: "
             ])
             ->add('lenght', IntegerType::class, [
-                'label' => "Durée: ",
+                'label' => "Durée (en minutes): ",
                 'attr' => [
                     'placeholder' => 90
                 ]
