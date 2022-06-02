@@ -16,13 +16,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
-
     #[Route('/', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+
+        //vérification si l'utilisateur est déjà connecté via remember me
+        //si oui direction vers la page d'accueil
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->render('trip/home.html.twig');
+        }
 
         // get the security error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
