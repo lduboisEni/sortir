@@ -36,7 +36,7 @@ class AppFixtures extends Fixture
         $this->addCities($manager);
         $this->addUsers($manager);
         $this->addStates($manager);
-        //$this->addPlaces($manager);
+        $this->addPlaces($manager);
         //$this->addTrips();
 
 
@@ -107,17 +107,20 @@ class AppFixtures extends Fixture
         $places = ['Cinema', 'Bowling', 'Patinoire', 'Bar'];
 
         //je crée 10 lieux
-        //for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 10; $i++) {
 
         $place = new Place();
 
         $place
             ->setCity($this->faker->randomElement($cities))
-            ->setName($this->faker->randomElement($places));
+            ->setName($this->faker->randomElement($places))
+            ->setStreet($this->faker->streetName)
+            ->setLat($this->faker->latitude)
+            ->setLongitude($this->faker->longitude);
 
 
         $manager->persist($place);
-        //}
+        }
 
         $manager->flush();
 

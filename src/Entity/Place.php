@@ -23,7 +23,7 @@ class Place
     private $lat;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private $long;
+    private $longitude;
 
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'places')]
     #[ORM\JoinColumn(nullable: false)]
@@ -70,14 +70,14 @@ class Place
         return $this;
     }
 
-    public function getLong(): ?float
+    public function getLongitude(): ?float
     {
-        return $this->long;
+        return $this->longitude;
     }
 
-    public function setLong(?float $long): self
+    public function setLongitude(?float $longitude): self
     {
-        $this->long = $long;
+        $this->longitude = $longitude;
 
         return $this;
     }

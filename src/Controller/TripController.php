@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\State;
 use App\Repository\CampusRepository;
 use App\Entity\Trip;
 use App\Form\TripType;
+use App\Repository\PlaceRepository;
+use App\Repository\StateRepository;
 use App\Repository\TripRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,25 +19,44 @@ use Symfony\Component\Routing\Annotation\Route;
 class TripController extends AbstractController
 {
        #[Route('/create', name: 'create')]
-    public function create(TripRepository $repo, Request $request): Response
+    public function create(TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
-
         //création d'une nouvelle sortie
         $trip = new Trip();
+        $trip
+            ->setOrganiser($this->getUser())
+            ->setPlace($placeRepository->findOneBy(array('name' => "Cinema")));
 
         //création du formulaire
         $tripForm = $this->createForm(TripType::class, $trip);
         $tripForm->handleRequest($request);
-
+        dump('coucou');
         //traitement du formulaire
         if ($tripForm->isSubmitted() && $tripForm->isValid()) {
+            dump('bonjour');
+            //si bouton 'save'
+            dump($tripForm->get('save')->isClicked());
+            if ($tripForm->get('save')->isClicked()) {
+                //l'état de la sortie passe à "ouverte"
+                $state = $stateRepository->findOneBy(array('description'=>"Créée"));
+                $trip->setState($state);
+                $tripRepository->add($trip, true);
+                $this->addFlash("success", "Ta proposition de sortie est enregistrée!");
+                dump('salut');
+            }
 
-            $repo->add($trip, true);
-            $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
-            return $this->redirectToRoute();
+            //si bouton 'publish'
+            if ($request->get('publish')){
+                $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
+                $trip->setState($state);
+                $tripRepository->add($trip, true);
+                $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
+                dump('hello');
+            }
+
+            return $this->redirectToRoute("trip_home");
 
         }
-
         return $this->render('trip/create.html.twig',
             ['tripForm' => $tripForm->createView()]);
 
