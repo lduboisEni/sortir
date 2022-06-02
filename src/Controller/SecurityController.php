@@ -16,13 +16,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
-
     #[Route('/', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+
+        //vérification si l'utilisateur est déjà connecté via remember me
+        //si oui direction vers la page d'accueil
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('trip_home');
+        }
 
         // get the security error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -50,7 +52,6 @@ class SecurityController extends AbstractController
 
         $profileForm->handleRequest($request);
 
-
         //Clic sur le bouton enregistrer mise à jour du profil avec message
         if ($profileForm->get('Enregistrer') && $profileForm->isSubmitted() && $profileForm->isValid()) {
 
@@ -62,8 +63,6 @@ class SecurityController extends AbstractController
 
                     //effectuer le hachage du mot de passe
                     $hashed = $hasher->hashPassword($user, $newPassword);
-
-                    dump($hashed);
 
                     //setter le nouveau mot de passe à l'utilisateur et envoyer en bdd
                     $user->setPassword($hashed);
@@ -84,13 +83,6 @@ class SecurityController extends AbstractController
             }
 
         }
-
-        //Clic sur annuler : retour à la page d'accueil avec message
-//        if ($profileForm->get('Annuler') && $profileForm->get('Annuler')->isSubmitted()) {
-//
-//            $this->addFlash('message', 'Annulation');
-//            return $this->redirectToRoute('trip_home');
-//        }
 
         return $this->render('user/edit.html.twig', [
             'profileForm' => $profileForm->createView()
