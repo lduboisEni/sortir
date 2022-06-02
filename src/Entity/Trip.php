@@ -30,6 +30,9 @@ class Trip
     #[ORM\Column(type: 'integer')]
     private $maxRegistration;
 
+    #[ORM\Column(type: 'integer')]
+    private $registrationNumber;
+
     #[ORM\Column(type: 'text', nullable: true)]
     private $tripInfos;
 
@@ -146,6 +149,25 @@ class Trip
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRegistrationNumber()
+    {
+        return $this->registrationNumber;
+    }
+
+    /**
+     * @param mixed $registrationNumber
+     * @return Trip
+     */
+    public function setRegistrationNumber($registrationNumber)
+    {
+        $this->registrationNumber = $registrationNumber;
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, User>

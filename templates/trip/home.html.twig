@@ -9,12 +9,30 @@
     </div>
 
     <div id="filter-zone">
-        {{form_start(searchForm)}}
-        {{form_widget(searchForm)}}
+        {{ form_start(searchForm) }}
+        {{ form_end(searchForm) }}
+    </div>
 
-        <button>Envoyer</button>
-        {{form_end(searchForm)}}
-
+    <div id="trip-display">
+        <table>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture des inscriptions le</th>
+                <th>Nb d'inscrits/nb de places</th>
+                <th>Etat de la sortie</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            {% for trip in tripList %}
+                <tr>
+                    <td>{{ trip.name }}</td>
+                    <td>{{ trip.start_time|date("d,m,Y H") }}h{{ trip.start_time|date("i") }}</td>
+                    <td>{{trip.registration_number}}{{ trip.max_registration }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 
 {% endblock %}
