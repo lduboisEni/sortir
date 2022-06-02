@@ -22,10 +22,12 @@
                 {%endif%}
             {% endfor %}
         </h4>
+        <p>Sortie : {{trip.state.description}}</p>
         <p>Organisateur : {{trip.organiser.name}}</p>
-        <p>Date de la sortie : le {{trip.startTime|date("d M Y")}} à {{trip.startTime|date("H",'h',"i")}}</p>
+        <p>Date de la sortie : le {{trip.startTime|date("d M Y")}} à {{trip.startTime|date("H")}}h{{trip.startTime|date("i")}}</p>
         <p>Nombre d'inscrits : {{trip.users.count()}}/{{trip.maxRegistration}}</p>
 
     </div>
     {% endfor %}
+
 {% endblock %}

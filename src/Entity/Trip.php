@@ -40,8 +40,6 @@ class Trip
     #[Assert\Positive(message: "Veuillez entrer un nombre positif.")]
     private $maxRegistration;
 
-    #[ORM\Column(type: 'integer')]
-    private $registrationNumber;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $tripInfos;
@@ -51,7 +49,7 @@ class Trip
     private $state;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'trips')]
-    private ArrayCollection $users;
+    private $users;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'organisedTrips')]
     #[ORM\JoinColumn(nullable: false)]
@@ -157,24 +155,6 @@ class Trip
     {
         $this->state = $state;
 
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRegistrationNumber()
-    {
-        return $this->registrationNumber;
-    }
-
-    /**
-     * @param mixed $registrationNumber
-     * @return Trip
-     */
-    public function setRegistrationNumber($registrationNumber)
-    {
-        $this->registrationNumber = $registrationNumber;
         return $this;
     }
 
