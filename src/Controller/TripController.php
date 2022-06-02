@@ -77,6 +77,7 @@ class TripController extends AbstractController
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
+
             }
 
             return $this->render('trip/home.html.twig', [

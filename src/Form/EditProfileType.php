@@ -17,6 +17,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Blank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Config\Framework\AssetsConfig;
 
 class EditProfileType extends AbstractType
 {
@@ -27,7 +31,13 @@ class EditProfileType extends AbstractType
                 'label' => 'Pseudo :'
             ])
             ->add('name', TextType::class, [
-                'label' => 'Nom :'
+                'label' => 'Nom :',
+                'constraints' => [
+                  //ajouter une contrainte sans chiffre
+                  new Regex([
+
+                  ]),
+                ]
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom :'
@@ -45,6 +55,16 @@ class EditProfileType extends AbstractType
                 'required' => false,
                 'first_options'  => ['label' => 'Mot de passe :'],
                 'second_options' => ['label' => 'Confirmation :'],
+                'constraints' => [
+                    new Blank(),
+                    new Length([
+                        'min' => 8,
+                        'minMessage' => 'Votre mot de passe doit faire 8 caractères minimum',
+                        //max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+
+                ],
             ])
             ->add('campus', EntityType::class, [
                 'label' => 'Campus :',
