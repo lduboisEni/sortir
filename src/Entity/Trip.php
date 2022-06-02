@@ -27,6 +27,7 @@ class Trip
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: "Votre sortie doit avoir une durée.")]
+    #[Assert\Positive(message: "Veuillez entrer un nombre positif.")]
     private $lenght;
 
     #[ORM\Column(type: 'date')]

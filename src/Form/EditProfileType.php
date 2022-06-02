@@ -11,10 +11,11 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditProfileType extends AbstractType
@@ -37,18 +38,22 @@ class EditProfileType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email :'
             ])
+            ->add('password', RepeatedType::class,[
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les deux mots de passe ne sont pas identiques',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => false,
+                'first_options'  => ['label' => 'Mot de passe :'],
+                'second_options' => ['label' => 'Confirmation :'],
+            ])
             ->add('campus', EntityType::class, [
                 'label' => 'Campus :',
                 'class' => Campus::class,
                 'choice_label' => 'name',
             ])
-            ->add('password', PasswordType::class,[
-                'label' => 'Mot de passe :'
-            ])
-            //->add('passwordConfirmation', TextType::class, [
-            //    'label' => 'Confirmation :'
-            //])
             ->add('Enregistrer', SubmitType::class)
+
+            ->add('Annuler', ResetType::class)
         ;
     }
 
