@@ -2,6 +2,8 @@
 
 {% block main %}
 
+    <h2> Créer une sortie </h2>
+
 {{ form_start(tripForm) }}
     {{ form_row(tripForm.name) }}
     {{ form_row(tripForm.startTime) }}
@@ -10,9 +12,10 @@
     {{ form_row(tripForm.lenght) }}
     {{ form_row(tripForm.tripInfos) }}
     {{ form_row(tripForm.campus) }}
-<button>Enregistrer</button>
-<button>Publier la sortie</button>
-<button>Annuler</button>
+    {#{{ form_row(tripForm.(place.name)) }}#}
+    {{form_row(tripForm.save)}}
+    {{form_row(tripForm.publish)}}
+    {{form_row(tripForm.cancel)}}
 {{ form_end(tripForm) }}
 
 {% endblock %}

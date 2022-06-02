@@ -6,6 +6,7 @@ use App\Repository\TripRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TripRepository::class)]
 class Trip
@@ -16,18 +17,27 @@ class Trip
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Votre sortie doit avoir un nom.")]
     private $name;
 
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank(message: "Votre sortie doit avoir une date et une heure de début.")]
+    #[Assert\GreaterThan("today", message: "La date de début de l'activité doit être postérieure à aujourd'hui.")]
     private $startTime;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank(message: "Votre sortie doit avoir une durée.")]
     private $lenght;
 
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank(message: "Votre sortie doit avoir date limite d'inscription.")]
+    #[Assert\LessThan(propertyPath:"startTime", message: "La date limite d'inscription doit être antérieure à la date de début.")]
+    #[Assert\GreaterThanOrEqual("today", message: "La date limite d'inscription doit être postérieure à aujourd'hui.")]
     private $registrationTimeLimit;
 
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank(message: "Votre sortie doit comporter une limite d'inscrit.")]
+    #[Assert\Positive(message: "Veuillez entrer un nombre positif.")]
     private $maxRegistration;
 
     #[ORM\Column(type: 'integer')]
