@@ -16,12 +16,16 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
+
     #[Route('/', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+
+        //vérification si l'utilisateur est déjà connecté via remember me
+        //si oui direction vers la page d'accueil
+        if ($this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return $this->redirectToRoute('trip_home');
+        }
 
         // get the security error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -44,7 +48,7 @@ class SecurityController extends AbstractController
     public function editProfile(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $hasher): Response
     {
         //récupération de l'utilisateur par
-        $user = $userRepository->find($this->getUser());
+        $user= $userRepository->find($this->getUser());
         $profileForm = $this->createForm(EditProfileType::class, $user);
 
         $profileForm->handleRequest($request);
@@ -56,21 +60,19 @@ class SecurityController extends AbstractController
             //vérification mot de passe
             if ($profileForm['password']->getData()) {
 
-                //récupération du nouveau mot de passe saisi
-                $newPassword = $profileForm['password']->getData();
+                    //récupération du nouveau mot de passe saisi
+                    $newPassword = $profileForm['password']->getData();
 
-                //effectuer le hachage du mot de passe
-                $hashed = $hasher->hashPassword($user, $newPassword);
+                    //effectuer le hachage du mot de passe
+                    $hashed = $hasher->hashPassword($user, $newPassword);
 
-                dump($hashed);
+                    //setter le nouveau mot de passe à l'utilisateur et envoyer en bdd
+                    $user->setPassword($hashed);
+                    $userRepository->add($user, true);
 
-                //setter le nouveau mot de passe à l'utilisateur et envoyer en bdd
-                $user->setPassword($hashed);
-                $userRepository->add($user, true);
-
-                //retourner à la page home et afficher un message
-                $this->addFlash('message', 'votre mot de passe a bien été modifié');
-                return $this->redirectToRoute('trip_home');
+                    //retourner à la page home et afficher un message
+                    $this->addFlash('message', 'votre mot de passe a bien été modifié');
+                    return $this-> redirectToRoute('trip_home');
             }
 
             if (!$profileForm['password']->getData()) {
@@ -78,8 +80,8 @@ class SecurityController extends AbstractController
                 //mise à jour du profil et envoi à la bdd
                 $userRepository->add($user, true);
 
-                $this->addFlash('message', 'Profil mis à jour');
-                return $this->redirectToRoute('trip_home');
+            $this->addFlash('message', 'Profil mis à jour');
+            return $this->redirectToRoute('trip_home');
             }
 
         }
@@ -94,7 +96,7 @@ class SecurityController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'profileForm' => $profileForm->createView()
         ]);
-    }
+      }
 
     #[Route(path: '/profile/{id}', name: 'otherProfile')]
     public function showOtherProfile($id, UserRepository $userRepository)

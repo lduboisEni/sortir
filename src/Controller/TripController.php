@@ -70,20 +70,27 @@ class TripController extends AbstractController
         public function index(Request $request, TripRepository $tripRepository): Response
         {
             $search = new Search();
+            dump('1');
+
             $searchForm =$this->createForm(SearchType::class, $search);
             $searchForm->handleRequest($request);
 
+            dump('2');
+
             $tripList =$tripRepository->findAll();
+
+            dump($tripList);
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()){
 
+            dump('3');
             }
 
-            return $this->render('trip/home.html.twig', [
-                'searchForm' => $searchForm->createView(),
-                'tripList' => $tripList
+           return $this->render('trip/home.html.twig', [
+              'searchForm' => $searchForm->createView(),
+              'tripList' => $tripList
             ]);
-        }
+       }
 
     #[Route('/display/{id}', name: 'display')]
     public function display($id, TripRepository $tripRepository): Response
