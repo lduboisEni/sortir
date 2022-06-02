@@ -32,12 +32,12 @@ class EditProfileType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label' => 'Nom :',
-                'constraints' => [
-                  //ajouter une contrainte sans chiffre
-                  new Regex([
-
-                  ]),
-                ]
+//                'constraints' => [
+//                  //ajouter une contrainte sans chiffre
+//                  new Regex([
+//
+//                  ]),
+//                ]
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom :'
@@ -73,7 +73,6 @@ class EditProfileType extends AbstractType
             ])
             ->add('Enregistrer', SubmitType::class)
 
-            ->add('Annuler', ResetType::class)
         ;
     }
 
