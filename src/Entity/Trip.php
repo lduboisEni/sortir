@@ -27,6 +27,7 @@ class Trip
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(message: "Votre sortie doit avoir une durée.")]
+    #[Assert\Positive(message: "Veuillez entrer un nombre positif.")]
     private $lenght;
 
     #[ORM\Column(type: 'date')]
@@ -39,6 +40,7 @@ class Trip
     #[Assert\NotBlank(message: "Votre sortie doit comporter une limite d'inscrit.")]
     #[Assert\Positive(message: "Veuillez entrer un nombre positif.")]
     private $maxRegistration;
+
 
     #[ORM\Column(type: 'text', nullable: true)]
     private $tripInfos;
@@ -156,6 +158,7 @@ class Trip
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, User>
