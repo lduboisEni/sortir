@@ -34,12 +34,29 @@
             {% endif %}
 
             {% for user in trip.users %}
-                {% if(not user.id) and (not trip.organiser.id) %}
+                {% if(not user.id) and (not trip.organiser.id) and (trip.state.description == "Ouverte")%}
                     <button onclick="">S'incrire</button>
                 {% endif %}
             {% endfor %}
 
+            {% for user in trip.users %}
+                {% if(user.id) and (not trip.organiser.id) and (trip.state.description == "Ouverte" or "Clôturée")%}
+                    <button onclick="">Se désinscrire</button>
+                {% endif %}
+            {% endfor %}
+
+            {% if (trip.organiser.id) and (trip.state.description == "Créée") %}
+                <button onclick="" id="display">Publier</button>
+            {% endif %}
+
+            {% if (trip.organiser.id) and (trip.state.description == "Ouverte") %}
+                <button onclick="" id="display">Annuler</button>
+            {% endif %}
         </div>
     {% endfor %}
+
+    <div>
+        <button onclick="location.href= '{{ path('trip_create')}}'" id="createTrip">Créer une sortie</button>
+    </div>
 
 {% endblock %}
