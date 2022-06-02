@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Form\model\Search;
+use App\Form\SearchType;
 use App\Entity\State;
 use App\Repository\CampusRepository;
 use App\Entity\Trip;
@@ -19,9 +21,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/trip', name: 'trip_')]
 class TripController extends AbstractController
 {
-    #[Route('/create', name: 'create')]
+       #[Route('/create', name: 'create')]
     public function create(TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
+
         //création d'une nouvelle sortie
         $trip = new Trip();
         $trip
@@ -39,7 +42,7 @@ class TripController extends AbstractController
             //si bouton 'save'
             if ($tripForm->get('save')->isClicked()) {
                 //l'état de la sortie passe à "Créée"
-                $state = $stateRepository->findOneBy(array('description' => "Créée"));
+                $state = $stateRepository->findOneBy(array('description'=>"Créée"));
                 $trip->setState($state);
 
                 $tripRepository->add($trip, true);
@@ -47,9 +50,9 @@ class TripController extends AbstractController
             }
 
             //si bouton 'publish'
-            if ($tripForm->get('publish')->isClicked()) {
+            if ($tripForm->get('publish')->isClicked()){
                 //l'état de la sortie passe à "Ouverte"
-                $state = $stateRepository->findOneBy(array('description' => "Ouverte"));
+                $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
                 $trip->setState($state);
 
                 $tripRepository->add($trip, true);
@@ -63,15 +66,24 @@ class TripController extends AbstractController
             ['tripForm' => $tripForm->createView()]);
 
     }
+        #[Route('/', name: 'home')]
+        public function index(Request $request, TripRepository $tripRepository): Response
+        {
+            $search = new Search();
+            $searchForm =$this->createForm(SearchType::class, $search);
+            $searchForm->handleRequest($request);
 
-    #[Route('/', name: 'home')]
-    public function index(CampusRepository $campusRepository): Response
-    {
-        $campusList = $campusRepository->findBy([], ["name" => "ASC"]);
-        return $this->render('trip/home.html.twig', [
-            'campusList' => $campusList
-        ]);
-    }
+            $tripList =$tripRepository->findAll();
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()){
+
+            }
+
+            return $this->render('trip/home.html.twig', [
+                'searchForm' => $searchForm->createView(),
+                'tripList' => $tripList
+            ]);
+        }
 
     #[Route('/display/{id}', name: 'display')]
     public function display($id, TripRepository $tripRepository): Response
