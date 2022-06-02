@@ -8,10 +8,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class TripType extends AbstractType
 {
@@ -22,16 +25,21 @@ class TripType extends AbstractType
                 'label' => "Nom de la sortie: "
             ])
             ->add('startTime', DateTimeType::class, [
-                'label' => "Date et heure de la sortie: "
+                'label' => "Date et heure de la sortie: ",
+                'widget' => 'single_text'
             ])
             ->add('registrationTimeLimit', DateType::class, [
-                'label' => "Date limite d'inscription: "
+                'label' => "Date limite d'inscription: ",
+                'widget' => 'single_text'
             ])
             ->add('maxRegistration', IntegerType::class, [
                 'label' => "Nombre de places: "
             ])
             ->add('lenght', IntegerType::class, [
-                'label' => "Durée: "
+                'label' => "Durée: ",
+                'attr' => [
+                    'placeholder' => 90
+                ]
             ])
             ->add('tripInfos', TextareaType::class, [
                 'label' => "Description et infos: "
@@ -41,11 +49,19 @@ class TripType extends AbstractType
                 'choice_label' => "name",
                 'class' => 'App\Entity\Campus'
             ])
-            ->add('place', EntityType::class, [
-                'class' => 'App\Entity\Place'
-            ] )
-
-        ;
+//            ->add('place', EntityType::class, [
+//                'choice_label' => "name",
+//                'class' => 'App\Entity\Place'
+//            ])
+            ->add('save', SubmitType::class, [
+                'label' => "Enregister",
+            ])
+            ->add('publish', SubmitType::class, [
+                'label' => "Publier la sortie"
+            ])
+            ->add('cancel', ResetType::class, [
+                'label' => "Annuler"
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
