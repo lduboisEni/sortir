@@ -102,10 +102,12 @@ class TripController extends AbstractController
 
         //création d'une nouvelle sortie
         $trip = new Trip();
+        $user = $this->getUser();
         $trip
-            ->setOrganiser($this->getUser())
+            ->setOrganiser($user)
             ->setPlace($placeRepository->findOneBy(array('name' => "Cinema")))
-            ->addUser($this->getUser());
+            ->setCampus($user->getCampus())
+            ->addUser($user);
 
         //création du formulaire
         $tripForm = $this->createForm(TripType::class, $trip);
@@ -135,7 +137,8 @@ class TripController extends AbstractController
 
          }
         return $this->render('trip/create.html.twig',
-            ['tripForm' => $tripForm->createView()]);
+            ['tripForm' => $tripForm->createView(),
+                'user' => $user]);
 
     }
 
