@@ -24,15 +24,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class TripController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(Request $request, TripRepository $tripRepository): Response
+    public function index(Request $request, TripRepository $tripRepository, StateRepository $stateRepository): Response
     {
         $search = new Search();
-        dump('1');
+        $user = $this->getUser();
 
         $searchForm =$this->createForm(SearchType::class, $search);
         $searchForm->handleRequest($request);
 
-        $tripList =$tripRepository->filterBy($search);
+        $tripList =$tripRepository->filterBy($search, $user, $stateRepository);
 
 
         return $this->render('trip/home.html.twig', [

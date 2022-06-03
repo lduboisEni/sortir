@@ -38,9 +38,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255)]
     private $phoneNumber;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $imageFilename;
-
     #[ORM\Column(type: 'boolean')]
     private $admin;
 
@@ -77,24 +74,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->email = $email;
 
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImageFilename()
-    {
-        return $this->imageFilename;
-    }
-
-    /**
-     * @param mixed $imageFilename
-     * @return User
-     */
-    public function setImageFilename($imageFilename)
-    {
-        $this->imageFilename = $imageFilename;
         return $this;
     }
 
