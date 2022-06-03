@@ -6,4 +6,9 @@
 
             {{ form(tripForm) }}
 
+    <a href="{{ path('trip_cancel', {'id' : trip.id}) }}"><button>Supprimer la sortie</button></a>
+
+    <a href="{{ path('trip_home') }}"><button>Annuler</button></a>
+
+
 {% endblock %}

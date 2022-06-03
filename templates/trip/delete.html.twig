@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    <h2> Modifier une sortie </h2>
+
+    <div>
+        <p>Nom de la sortie: {{trip.name}}</p>
+        <p>Date et heure de la sortie: {{trip.startTime|date("d-m-Y H:i")}}</p>
+        <p>Campus : {{trip.campus}}</p>
+        <p>Lieu : {{trip.place}}</p>
+        <p>Motif : </p>
+    </div>
+
+    <button onclick="location.href='{{ path('trip_delete', {'id' : trip.id}) }}'" id="delete">Enregistrer</button>
+
+    <a href="{{ path('trip_home') }}"><button>Annuler</button></a>
+
+{% endblock %}
