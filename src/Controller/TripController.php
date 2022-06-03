@@ -59,6 +59,10 @@ class TripController extends AbstractController
                 $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
             }
 
+            if ($tripForm->get('cancel')->isClicked()){
+                return $this->redirectToRoute("trip_home");
+            }
+
             return $this->redirectToRoute("trip_home");
 
         }
