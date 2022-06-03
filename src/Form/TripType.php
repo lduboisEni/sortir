@@ -2,6 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
+use App\Entity\City;
+use App\Entity\Place;
 use App\Entity\Trip;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -45,14 +48,21 @@ class TripType extends AbstractType
                 'label' => "Description et infos: "
             ])
             ->add('campus', EntityType::class, [
+                'class' => Campus::class,
                 'label' => "Campus: ",
-                'choice_label' => "name",
-                'class' => 'App\Entity\Campus'
+                'choice_label' => "name"
             ])
-//            ->add('place', EntityType::class, [
-//                'choice_label' => "name",
-//                'class' => 'App\Entity\Place'
-//            ])
+            ->add('city', EntityType::class, [
+                'class' => City::class,
+                'label' => "Ville",
+                'choice_label' => "name",
+                'mapped' => false
+            ])
+            ->add('place', EntityType::class, [
+                'class' => Place::class,
+                'label' => "Lieu",
+                'choice_label' => "name",
+              ])
             ->add('save', SubmitType::class, [
                 'label' => "Enregister",
             ])
