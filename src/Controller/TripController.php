@@ -32,7 +32,7 @@ class TripController extends AbstractController
         $searchForm =$this->createForm(SearchType::class, $search);
         $searchForm->handleRequest($request);
 
-        $tripList =$tripRepository->filterBy();
+        $tripList =$tripRepository->filterBy($search);
 
 
         return $this->render('trip/home.html.twig', [
@@ -116,10 +116,6 @@ class TripController extends AbstractController
 
                 $tripRepository->add($trip, true);
                 $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
-            }
-
-            if ($tripForm->get('cancel')->isClicked()){
-                return $this->redirectToRoute("trip_home");
             }
 
             return $this->redirectToRoute("trip_home");
