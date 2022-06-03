@@ -105,11 +105,11 @@ class TripController extends AbstractController
         //je récupère la sortie qui a été choisie
         $trip = $tripRepository->findOneBy($idTrip);
 
+        //j'ajoute le participant et met à jour la bdd
         $trip->getUsers()->add($user);
         $tripRepository->add($trip, true);
 
         $this->addFlash("success", "Félicitations vous êtes inscrit !");
-
     }
 
     public function cancelSubscribe($idTrip, TripRepository $tripRepository)

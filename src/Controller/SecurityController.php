@@ -81,7 +81,6 @@ class SecurityController extends AbstractController
             $this->addFlash('message', 'Profil mis à jour');
             return $this->redirectToRoute('trip_home');
             }
-
         }
 
         return $this->render('user/edit.html.twig', [
