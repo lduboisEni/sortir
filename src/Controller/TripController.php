@@ -196,11 +196,12 @@ class TripController extends AbstractController
     #[Route('/cancel/{id}', name: 'cancel')]
     public function cancel($id, TripRepository $tripRepository): Response
     {
+        //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
 
-        return $this->render('trip/delete.html.twig', [
+        return $this->render('trip/cancel.html.twig', [
             'id' => $id,
-            'trip' => $trip
+            'trip' => $trip,
         ]);
     }
 
@@ -209,8 +210,6 @@ class TripController extends AbstractController
     {
         $trip = $tripRepository->find($id);
 
-        //$trip->setTripInfos("Sortie annulée !!" + {{ $motif}});
-
         $tripRepository->remove($trip, true);
 
         $this->addFlash('message', 'Sortie supprimée! ');
@@ -218,4 +217,26 @@ class TripController extends AbstractController
         return $this->redirectToRoute('trip_home');
     }
 
+    #[Route('/cancelTrip/{id}', name: 'cancelTrip')]
+    public function cancelFuncTrip($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request)
+    {
+
+        //récupération de la sortie cliquée
+        $trip = $tripRepository->find($id);
+
+        //modification du statut de la sortie
+        $state = $stateRepository->findOneBy(array('description'=>"Annulée"));
+        $trip->setState($state);
+
+        //récupération du motif saisi et set de tripInfos
+        $motif = $request->get("motif", "");
+        $trip->setTripInfos($motif);
+
+        //mise à jour de la bdd et création du message
+        $tripRepository->add($trip, true);
+        $this->addFlash('message', "Ta sortie a été annulée !");
+
+        return $this->redirectToRoute('trip_home');
+
+    }
 }
