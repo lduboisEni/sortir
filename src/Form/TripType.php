@@ -58,9 +58,6 @@ class TripType extends AbstractType
             ])
             ->add('publish', SubmitType::class, [
                 'label' => "Publier la sortie"
-            ])
-            ->add('cancel', ResetType::class, [
-                'label' => "Annuler"
             ]);
     }
 

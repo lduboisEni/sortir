@@ -15,7 +15,7 @@
     {#{{ form_row(tripForm.(place.name)) }}#}
     {{form_row(tripForm.save)}}
     {{form_row(tripForm.publish)}}
-    {{form_row(tripForm.cancel)}}
+    <a href="{{path('trip_home')}}"><input type="button" value="Annuler"></a>
 {{ form_end(tripForm) }}
 
 {% endblock %}
