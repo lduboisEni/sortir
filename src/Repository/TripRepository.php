@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Trip;
+use App\Form\model\Search;
+use App\Form\SearchType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -42,17 +44,23 @@ class TripRepository extends ServiceEntityRepository
 //    /**
 //     * @return Trip[] Returns an array of Trip objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   public function filterBy($search): array
+   {
+       dump('ça passe par là');
+       $qb = $this->createQueryBuilder('t');
+           if ($search->getCampus()) {
+               dump('ça passe par ici');
+               $qb->andWhere('t.campus = :campus')
+                   ->setParameter('campus', $search->getCampus()->getId());
+           }
+         //  if ($search){
+
+         //  }
+
+       return $qb->getQuery()
+           ->getResult();
+    }
+
 
 //    public function findOneBySomeField($value): ?Trip
 //    {

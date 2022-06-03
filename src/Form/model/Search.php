@@ -3,24 +3,33 @@
 namespace App\Form\model;
 
 use App\Entity\Campus;
+use App\Repository\TripRepository;
 use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\String_;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
-class Search
-{
-    private Campus $campus;
+#[ORM\Entity(repositoryClass: TripRepository::class)]
+class Search{
+
+    #[ORM\ManyToOne(targetEntity: Campus::class, inversedBy: 'campusTrips')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $campus;
+
     private String $nameContain;
     private $begindate;
     private $enddate;
-    private Boolean $isOrganiser;
-    private Boolean $isRegistered;
-    private Boolean $isNotRegistered;
-    private Boolean $isPassed;
+    private bool $isOrganiser;
+    private bool $isRegistered;
+    private bool $isNotRegistered;
+    private bool $isPassed;
 
     /**
      * @return Campus
      */
-    public function getCampus(): Campus
+    public function getCampus(): ?Campus
     {
         return $this->campus;
     }
@@ -29,7 +38,7 @@ class Search
      * @param Campus $campus
      * @return Search
      */
-    public function setCampus(Campus $campus): Search
+    public function setCampus(?Campus $campus): Search
     {
         $this->campus = $campus;
         return $this;
