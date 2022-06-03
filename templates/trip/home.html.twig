@@ -37,26 +37,23 @@
 
             {% for user in trip.users %}
                 {% if(app.user.id != user.id) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
-                    <button id="suscribe">
-                        <a href="{{ path('trip_subscribe', {'id' : trip.id}) }}">
+                        <button onclick="location.href='{{ path('trip_subscribe', {'id' : trip.id}) }}'" id="suscribe">
                             S'incrire
-                        </a>
-                    </button>
+                        </button>
                 {% endif %}
             {% endfor %}
 
             {% for user in trip.users %}
                 {% if(app.user.id == user.id) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or "Clôturée") %}
-
-                    <button id="unSubscribe">
-                        <a href="{{ path('trip_unsubscribe', {'id' : trip.id}) }}">Se désinscrire</a>
-                    </button>
-
+                        <button onclick="location.href='{{ path('trip_unsubscribe', {'id' : trip.id}) }}'" id="unSubscribe">
+                            Se désinscrire
+                        </button>
                 {% endif %}
             {% endfor %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
                 <button onclick="" id="publishTrip">Publier</button>
+                <button onclick="" id="publishTrip">Modifier</button>
             {% endif %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Ouverte") %}

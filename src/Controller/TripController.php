@@ -32,7 +32,7 @@ class TripController extends AbstractController
         $searchForm =$this->createForm(SearchType::class, $search);
         $searchForm->handleRequest($request);
 
-        $tripList =$tripRepository->filterBy();
+        $tripList =$tripRepository->filterBy($search);
 
 
         return $this->render('trip/home.html.twig', [
