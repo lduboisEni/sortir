@@ -36,7 +36,7 @@ class SearchType extends AbstractType
             ->add('begindate', DateType::class, [
                 'label' => 'Entre ',
                 'widget' => 'single_text',
-                    'required' => false
+                'required' => false
             ])
             ->add('enddate', DateType::class, [
                 'label' => 'et ',

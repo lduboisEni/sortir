@@ -18,10 +18,20 @@ class Search{
     #[ORM\JoinColumn(nullable: false)]
     private $campus;
 
-    private String $nameContain;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $nameContain;
+
+    #[ORM\Column(type: 'date')]
+    #[Assert\GreaterThanOrEqual("today", message: "La date de début doit être postérieure à aujourd'hui.")]
     private $begindate;
+
+    #[ORM\Column(type: 'date')]
+    #[Assert\GreaterThanOrEqual("today", message: "La date de fin doit être postérieure à aujourd'hui.")]
     private $enddate;
-    private bool $isOrganiser;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isOrganiser;
+
     private bool $isRegistered;
     private bool $isNotRegistered;
     private bool $isPassed;
@@ -47,7 +57,7 @@ class Search{
     /**
      * @return String
      */
-    public function getNameContain(): string
+    public function getNameContain(): ?string
     {
         return $this->nameContain;
     }
@@ -56,7 +66,7 @@ class Search{
      * @param String $nameContain
      * @return Search
      */
-    public function setNameContain(string $nameContain): Search
+    public function setNameContain(?string $nameContain): Search
     {
         $this->nameContain = $nameContain;
         return $this;

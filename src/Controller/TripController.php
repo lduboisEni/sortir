@@ -115,7 +115,7 @@ class TripController extends AbstractController
                 $trip->setState($state);
 
                 $tripRepository->add($trip, true);
-                $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
+                $this->addFlash("message", "Ta proposition de sortie est ajoutée!");
             }
 
             return $this->redirectToRoute("trip_home");

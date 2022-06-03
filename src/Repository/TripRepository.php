@@ -44,21 +44,29 @@ class TripRepository extends ServiceEntityRepository
 //    /**
 //     * @return Trip[] Returns an array of Trip objects
 //     */
-   public function filterBy($search): array
-   {
-       dump('ça passe par là');
-       $qb = $this->createQueryBuilder('t');
-           if ($search->getCampus()) {
-               dump('ça passe par ici');
-               $qb->andWhere('t.campus = :campus')
-                   ->setParameter('campus', $search->getCampus()->getId());
-           }
-         //  if ($search){
+    public function filterBy($search): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        if ($search->getCampus()) {
+            $qb->andWhere('t.campus = :campus')
+                ->setParameter('campus', $search->getCampus()->getId());
+        }
+        if ($search->getBegindate()) {
+            $qb->andWhere('t.startTime > :begindate')
+                ->setParameter('begindate', $search->getBegindate());
+        }
+        if ($search->getEnddate()) {
+            $qb->andWhere('t.startTime < :enddate')
+                ->setParameter('enddate', $search->getEnddate());
+        }
+        if ($search->getNameContain()) {
+            dump('ça passe par ici');
+            $qb->andWhere('t.name like :nameContain ')
+                ->setParameter('nameContain', '%' . $search->getNameContain() . '%');
+        }
 
-         //  }
-
-       return $qb->getQuery()
-           ->getResult();
+        return $qb->getQuery()
+            ->getResult();
     }
 
 
