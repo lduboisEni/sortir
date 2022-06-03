@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Trip;
+use App\Form\model\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -44,6 +45,7 @@ class TripRepository extends ServiceEntityRepository
 //     */
    public function filterBy(): array
    {
+       $search = new Search();
        return $this->createQueryBuilder('t')
           ->orderBy('t.name', 'ASC')
             ->getQuery()
