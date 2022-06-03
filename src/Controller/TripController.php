@@ -75,9 +75,25 @@ class TripController extends AbstractController
 
         $this->addFlash('message', "Vous êtes bien désinscrit !");
 
-
         return $this->redirectToRoute('trip_home');
 
+    }
+
+    #[Route('/publish/{id}', name: 'publish')]
+    public function publish($id, TripRepository $tripRepository, StateRepository $stateRepository)
+    {
+        //je récupère la sortie qui a été choisie
+        $trip = $tripRepository->find($id);
+
+        //l'état de la sortie passe à "Ouverte"
+        $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
+        $trip->setState($state);
+
+        //modification de la sortie en bddd et ajout du message
+        $tripRepository->add($trip, true);
+        $this->addFlash('message', "Ta proposition de sortie est ajoutée!");
+
+        return $this->redirectToRoute('trip_home');
     }
 
     #[Route('/create', name: 'create')]
@@ -101,26 +117,23 @@ class TripController extends AbstractController
             //si bouton 'save'
             if ($tripForm->get('save')->isClicked()) {
                 //l'état de la sortie passe à "Créée"
-                $state = $stateRepository->findOneBy(array('description'=>"Créée"));
+                $state = $stateRepository->findOneBy(array('description' => "Créée"));
                 $trip->setState($state);
 
                 $tripRepository->add($trip, true);
                 $this->addFlash('message', "Ta proposition de sortie est enregistrée!");
+
+                return $this->redirectToRoute('trip_home');
             }
 
             //si bouton 'publish'
-            if ($tripForm->get('publish')->isClicked()){
-                //l'état de la sortie passe à "Ouverte"
-                $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
-                $trip->setState($state);
+            if ($tripForm->get('publish')->isClicked()) {
 
-                $tripRepository->add($trip, true);
-                $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
+                $this->publish($trip->getId(), $tripRepository, $stateRepository);
+
             }
 
-            return $this->redirectToRoute("trip_home");
-
-        }
+         }
         return $this->render('trip/create.html.twig',
             ['tripForm' => $tripForm->createView()]);
 
@@ -158,23 +171,22 @@ class TripController extends AbstractController
 
                 $tripRepository->add($trip, true);
                 $this->addFlash('message', "Ta proposition de sortie est enregistrée!");
+
+                return $this->redirectToRoute('trip_home');
             }
 
             //si bouton 'publish'
             if ($tripForm2->get('publish')->isClicked()){
-                //l'état de la sortie passe à "Ouverte"
-                $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
-                $trip->setState($state);
 
-                $tripRepository->add($trip, true);
-                $this->addFlash("success", "Ta proposition de sortie est ajoutée!");
+                $this->publish($trip->getId(), $tripRepository, $stateRepository);
+
             }
 
-            return $this->redirectToRoute("trip_home");
-
         }
-        return $this->render('trip/create.html.twig',[
-            'tripForm' => $tripForm2->createView()
+        return $this->render('trip/edit.html.twig',[
+            'tripForm' => $tripForm2->createView(),
+            'trip' => $trip,
+            'id' => $id
         ]);
     }
 
@@ -193,6 +205,9 @@ class TripController extends AbstractController
     public function delete($id, TripRepository $tripRepository): Response
     {
         $trip = $tripRepository->find($id);
+
+        //$trip->setTripInfos("Sortie annulée !!" + {{ $motif}});
+
         $tripRepository->remove($trip, true);
 
         $this->addFlash('message', 'Sortie supprimée! ');

@@ -52,12 +52,12 @@
             {% endfor %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
-                <button onclick="" id="publishTrip">Publier</button>
-                <button onclick="" id="publishTrip">Modifier</button>
+                <button onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">Publier</button>
+                <button onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">Modifier</button>
             {% endif %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Ouverte") %}
-                <button onclick="" id="cancelTrip">Annuler</button>
+                <button onclick="location.href='{{ path('trip_cancel', {'id' : trip.id}) }}'" id="cancelTrip">Annuler</button>
             {% endif %}
         </div>
     {% endfor %}
