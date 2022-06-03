@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
+
     #[Route('/', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
@@ -52,6 +53,7 @@ class SecurityController extends AbstractController
 
         $profileForm->handleRequest($request);
 
+
         //Clic sur le bouton enregistrer mise à jour du profil avec message
         if ($profileForm->get('Enregistrer') && $profileForm->isSubmitted() && $profileForm->isValid()) {
 
@@ -84,10 +86,27 @@ class SecurityController extends AbstractController
 
         }
 
+        //Clic sur annuler : retour à la page d'accueil avec message
+//        if ($profileForm->get('Annuler') && $profileForm->get('Annuler')->isSubmitted()) {
+//
+//            $this->addFlash('message', 'Annulation');
+//            return $this->redirectToRoute('trip_home');
+//        }
+
         return $this->render('user/edit.html.twig', [
             'profileForm' => $profileForm->createView()
         ]);
       }
 
+    #[Route(path: '/profile/{id}', name: 'otherProfile')]
+    public function showOtherProfile($id, UserRepository $userRepository)
+    {
+        $user = $userRepository->find($id);
+
+        return $this->render('user/other-profile.html.twig', [
+            'id' => $id,
+            'user' => $user,
+        ]);
+    }
 
 }
