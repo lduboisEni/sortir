@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
@@ -32,12 +33,6 @@ class EditProfileType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label' => 'Nom :',
-//                'constraints' => [
-//                  //ajouter une contrainte sans chiffre
-//                  new Regex([
-//
-//                  ]),
-//                ]
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom :'
@@ -63,7 +58,6 @@ class EditProfileType extends AbstractType
                         //max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
-
                 ],
             ])
             ->add('campus', EntityType::class, [
@@ -71,8 +65,11 @@ class EditProfileType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'name',
             ])
+            ->add('imageFile', FileType::class, [
+                'label' => 'Ma photo de profil :',
+                'mapped' => false
+            ])
             ->add('Enregistrer', SubmitType::class)
-
         ;
     }
 
