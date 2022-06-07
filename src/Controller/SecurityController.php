@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\EditProfileType;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use PhpParser\Node\Stmt\If_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,9 +45,9 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/edit', name: 'edit')]
-    public function editProfile(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $hasher): Response
+    public function editProfile(Request $request, FileUploader $fileUploader, UserRepository $userRepository, UserPasswordHasherInterface $hasher): Response
     {
-        //récupération de l'utilisateur par
+        //récupération de l'utilisateur
         $user= $userRepository->find($this->getUser());
         $profileForm = $this->createForm(EditProfileType::class, $user);
 
@@ -55,32 +56,37 @@ class SecurityController extends AbstractController
         //Clic sur le bouton enregistrer mise à jour du profil avec message
         if ($profileForm->get('Enregistrer') && $profileForm->isSubmitted() && $profileForm->isValid()) {
 
-            //vérification mot de passe
-            if ($profileForm['password']->getData()) {
+            //IMAGE
+                //on récupère l'image transmise
+                $image = $profileForm->get('image')->getData();
 
-                    //récupération du nouveau mot de passe saisi
-                    $newPassword = $profileForm['password']->getData();
+                if($image) {
+                    //on fait appel au service FileUploader
+                    $brochureFileName = $fileUploader->upload($image);
 
+                    //on stocke le nom de l'image dans la base de données
+                    $user->setImage($brochureFileName);
+                    $userRepository->add($user, true);
+                }
+
+            //MOT DE PASSE
+                //récupération du nouveau mot de passe saisi
+                $newPassword = $profileForm['password']->getData();
+
+                if($newPassword){
                     //effectuer le hachage du mot de passe
                     $hashed = $hasher->hashPassword($user, $newPassword);
 
                     //setter le nouveau mot de passe à l'utilisateur et envoyer en bdd
                     $user->setPassword($hashed);
+
+                    //mise à jour du profil et envoi à la bdd
                     $userRepository->add($user, true);
-
-                    //retourner à la page home et afficher un message
-                    $this->addFlash('message', 'votre mot de passe a bien été modifié');
-                    return $this-> redirectToRoute('trip_home');
-            }
-
-            if (!$profileForm['password']->getData()) {
-
-                //mise à jour du profil et envoi à la bdd
-                $userRepository->add($user, true);
+                }
 
             $this->addFlash('message', 'Profil mis à jour');
             return $this->redirectToRoute('trip_home');
-            }
+
         }
 
         return $this->render('user/edit.html.twig', [

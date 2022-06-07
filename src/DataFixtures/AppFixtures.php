@@ -117,7 +117,6 @@ class AppFixtures extends Fixture
             ->setLat($this->faker->latitude)
             ->setLongitude($this->faker->longitude);
 
-
         $manager->persist($place);
         }
 
@@ -156,7 +155,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "lea";
+        $plainPassword = "LeaDubois7";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
@@ -174,7 +173,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "sylvaine";
+        $plainPassword = "Sylvaine20";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
@@ -192,7 +191,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "soline";
+        $plainPassword = "Soline35";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
