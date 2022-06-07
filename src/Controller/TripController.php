@@ -42,7 +42,7 @@ class TripController extends AbstractController
                 $trip->setState($state);
                 $tripRepository->add($trip,true);
             }
-            if ($trip->getStartTime()>=$now && $endTimeTrip>=$now){
+            if ($trip->getStartTime()<=$now && $endTimeTrip>=$now){
                 $state = $stateRepository->findOneBy(array('description'=>"En cours"));
                 $trip->setState($state);
                 $tripRepository->add($trip,true);
