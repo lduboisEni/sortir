@@ -41,24 +41,53 @@ class TripRepository extends ServiceEntityRepository
         }
     }
 
+
+
 //    /**
 //     * @return Trip[] Returns an array of Trip objects
 //     */
-   public function filterBy($search): array
-   {
-       dump('ça passe par là');
-       $qb = $this->createQueryBuilder('t');
-           if ($search->getCampus()) {
-               dump('ça passe par ici');
-               $qb->andWhere('t.campus = :campus')
-                   ->setParameter('campus', $search->getCampus()->getId());
-           }
-         //  if ($search){
+    public function filterBy($search, $user, StateRepository $stateRepository): array
+    {
+        $qb = $this->createQueryBuilder('t');
+        if ($search->getCampus()) {
+            $qb->andWhere('t.campus = :campus')
+                ->setParameter('campus', $search->getCampus()->getId());
+        }
+        if ($search->getBegindate()) {
+            $qb->andWhere('t.startTime > :begindate')
+                ->setParameter('begindate', $search->getBegindate());
+        }
+        if ($search->getEnddate()) {
+            $qb->andWhere('t.startTime < :enddate')
+                ->setParameter('enddate', $search->getEnddate());
+        }
+        if ($search->getNameContain()) {
+            $qb->andWhere('t.name like :nameContain ')
+                ->setParameter('nameContain', '%' . $search->getNameContain() . '%');
+        }
+        if ($search->isOrganiser()) {
+            dump('ça passe par ici');
+            $qb->andWhere('t.organiser = :isOrganiser')
+                ->setParameter('isOrganiser',  $user);
+        }
+        if ($search->isRegistered()) {
+            dump('ça passe par ici');
+            $qb->andWhere(':isRegistered MEMBER OF t.users')
+                ->setParameter('isRegistered',  $user);
+        }
+        if ($search->isNotRegistered()) {
+            dump('ça passe par ici');
+            $qb->andWhere(':isNotRegistered not MEMBER t.users')
+                ->setParameter('isNotRegistered',  $user);
+        }
+        if ($search->isPassed()) {
+            dump('ça passe par ici');
+            $qb->andWhere('t.state = :isPassed')
+                ->setParameter('isPassed', $stateRepository->findBy(array('description' => "Passée")));
+        }
 
-         //  }
-
-       return $qb->getQuery()
-           ->getResult();
+        return $qb->getQuery()
+            ->getResult();
     }
 
 

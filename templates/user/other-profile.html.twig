@@ -2,6 +2,7 @@
 
 {% block main %}
 
+    <div class="text center">
     <h2>{{user.pseudo}}</h2>
 
     <p>Prénom: {{user.firstName}}</p>
@@ -11,5 +12,5 @@
     <p>Campus: {{user.campus.name}}</p>
 
     <a href="{{path('trip_home')}}"><input type="button" value="Retour"></a>
-
+    </div>
 {% endblock %}
