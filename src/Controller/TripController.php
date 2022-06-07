@@ -242,7 +242,6 @@ class TripController extends AbstractController
     #[Route('/cancelTrip/{id}', name: 'cancelTrip')]
     public function cancelFuncTrip($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request): Response
     {
-
         //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
         dump( '1');
