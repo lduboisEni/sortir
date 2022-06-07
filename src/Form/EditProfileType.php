@@ -69,8 +69,9 @@ class EditProfileType extends AbstractType
                 'label' => 'Ma photo de profil :',
                 'mapped' => false
             ])
-            ->add('Enregistrer', SubmitType::class)
-        ;
+            ->add('Enregistrer', SubmitType::class, [
+                'label' => "Enregister",
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
