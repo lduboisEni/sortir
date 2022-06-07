@@ -60,7 +60,8 @@ class SearchType extends AbstractType
                 'required' => false
             ])
 
-            ->add('Rechercher', SubmitType::class)
+            ->add('Rechercher', SubmitType::class, [
+                'label' => 'Rechercher'])
         ;
     }
 

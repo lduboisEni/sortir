@@ -2,9 +2,14 @@
 
 {% block main %}
 
-    {{form_start()}}
-        {{form_widget(placeForm)}}
-    {{form_end()}}
+    <h2>Ajouter un nouveau lieu</h2>
+
+    <div class="form-group row">
+    {{form_start(placeForm)}}
+        {{form_row(placeForm.city)}}
+        {{form_row(placeForm.name)}}
+    {{form_end(placeForm)}}
+    </div>
 
 
 {% endblock %}
