@@ -37,12 +37,17 @@ class TripController extends AbstractController
             //je calcule la dateTime à laquelle se termine la sortie (date de début + durée grâce à la fonction modify())
             $endTimeTrip = $trip->getStartTime()->modify('+'.$trip->getLenght().'minute');
 
+            if ($trip->getRegistrationTimeLimit()>$now) {
+                $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
+                $trip->setState($state);
+                $tripRepository->add($trip,true);
+            }
             if ($trip->getRegistrationTimeLimit()<$now) {
                 $state = $stateRepository->findOneBy(array('description'=>"Clôturée"));
                 $trip->setState($state);
                 $tripRepository->add($trip,true);
             }
-            if ($trip->getStartTime()>=$now && $endTimeTrip>=$now){
+            if ($trip->getStartTime()>=$now && $endTimeTrip<=$now){
                 $state = $stateRepository->findOneBy(array('description'=>"En cours"));
                 $trip->setState($state);
                 $tripRepository->add($trip,true);

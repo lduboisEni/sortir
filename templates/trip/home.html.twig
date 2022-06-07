@@ -63,7 +63,7 @@
             {% endif %}
 
             {# affichage du bouton "s'inscrire à la sortie" #}
-            {% if (not app.user in trip.users) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
+            {% if (app.user not in trip.users) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
                 <button style="background-color: #F0E68C" onclick="location.href='{{ path('trip_subscribe', {'id' : trip.id}) }}'" id="suscribe">
                     S'incrire
                 </button>
