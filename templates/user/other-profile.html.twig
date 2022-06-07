@@ -5,6 +5,7 @@
     <div class="text center">
     <h2>{{user.pseudo}}</h2>
 
+    <img src="{{ asset('/uploads/' ~ user.image) }}">
     <p>Prénom: {{user.firstName}}</p>
     <p>Nom: {{user.name}}</p>
     <p>Téléphone: {{user.phoneNumber}}</p>
