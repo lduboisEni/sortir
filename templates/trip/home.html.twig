@@ -43,11 +43,9 @@
         <div class="card border-warning mb-3 col-2" style="max-width: 20rem;">
 
             <h4>{{ trip.name }}
-                {% for user in trip.users %}
-                    {% if(app.user.id == user.id) %}
-                        - Inscrit
-                    {% endif %}
-                {% endfor %}
+                {% if(app.user in trip.users) %}
+                    - Inscrit
+                {% endif %}
             </h4>
             <p>Sortie : {{ trip.state.description }}</p>
             <p>Organisateur : {{ trip.organiser.firstname }} {{ trip.organiser.name }}</p>
@@ -56,35 +54,38 @@
             <p>Clôture des inscriptions : {{ trip.registrationTimeLimit|date("d M Y") }}</p>
             <p>Nombre d'inscrits : {{ trip.users.count() }}/{{ trip.maxRegistration }}</p>
 
+
+            {# affichage du bouton "afficher la sortie" en fonction de l'état #}
             {% if (trip.state.description != "Créée") %}
                 <button style="background-color: #C0FFC4" onclick="location.href= '{{ path('trip_display', {'id' : trip.id}) }}'" id="displayTrip">
                     Afficher
                 </button>
             {% endif %}
 
-            {% for user in trip.users %}
-                {% if(app.user.id != user.id) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
-                        <button style="background-color: #F0E68C" onclick="location.href='{{ path('trip_subscribe', {'id' : trip.id}) }}'" id="suscribe">
-                            S'incrire
-                        </button>
-                {% endif %}
-            {% endfor %}
+            {# affichage du bouton "s'inscrire à la sortie" #}
+            {% if (app.user not in trip.users) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
+                <button style="background-color: #F0E68C" onclick="location.href='{{ path('trip_subscribe', {'id' : trip.id}) }}'" id="suscribe">
+                    S'incrire
+                </button>
+            {% endif %}
 
-            {% for user in trip.users %}
-                {% if(app.user.id == user.id) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or "Clôturée") %}
-                        <button style="background-color: #FFEFD5" onclick="location.href='{{ path('trip_unsubscribe', {'id' : trip.id}) }}'" id="unSubscribe">
-                            Se désinscrire
-                        </button>
-                {% endif %}
-            {% endfor %}
+
+            {% if(app.user in trip.users) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or trip.state.description == "Clôturée") %}
+                <button style="background-color: #FFEFD5" onclick="location.href='{{ path('trip_unsubscribe', {'id' : trip.id}) }}'" id="unSubscribe">
+                    Se désinscrire
+                </button>
+            {% endif %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
-                <button onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">Publier</button>
-                <button onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">Modifier</button>
+                <button style="background-color: #FFFFE0" onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
+                    Publier
+                </button>
+                <button style="background-color: #FFF0F5" onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">Modifier
+                </button>
             {% endif %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Ouverte") %}
-                <button onclick="location.href='{{ path('trip_cancel', {'id' : trip.id}) }}'" style="background-color: #FFDAB9" id="cancelTrip">Annuler</button>
+                <button style="background-color: #FFDAB9" onclick="location.href='{{ path('trip_cancel', {'id' : trip.id}) }}'" id="cancelTrip">Annuler</button>
             {% endif %}
         </div>
         </div>
