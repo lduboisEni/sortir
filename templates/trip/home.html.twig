@@ -70,7 +70,7 @@
             {% endif %}
 
 
-            {% if(app.user in trip.users) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or "Clôturée") %}
+            {% if(app.user in trip.users) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or trip.state.description == "Clôturée") %}
                 <button style="background-color: #FFEFD5" onclick="location.href='{{ path('trip_unsubscribe', {'id' : trip.id}) }}'" id="unSubscribe">
                     Se désinscrire
                 </button>
