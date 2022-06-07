@@ -8,27 +8,32 @@
         <fieldset>
             <legend><h2> Créer une sortie </h2></legend>
 
-    <div class="form-group row">
+            <div class="form-group row">
 
-    <div class="form-group col-6">
-        {{ form_row(tripForm.name) }}
-        {{ form_row(tripForm.startTime) }}
-        {{ form_row(tripForm.registrationTimeLimit) }}
-        {{ form_row(tripForm.maxRegistration) }}
-        {{ form_row(tripForm.lenght) }}
-        {{ form_row(tripForm.tripInfos) }}
-    </div>
+            <div class="form-group col-6">
+                {{ form_row(tripForm.name) }}
+                {{ form_row(tripForm.startTime) }}
+                {{ form_row(tripForm.registrationTimeLimit) }}
+                {{ form_row(tripForm.maxRegistration) }}
+                {{ form_row(tripForm.lenght) }}
+                {{ form_row(tripForm.tripInfos) }}
+            </div>
 
-    <div class="form-group col-6">
-        {{ form_row(tripForm.campus) }}
-        {{ form_row(tripForm.city) }}
-        {{ form_row(tripForm.place) }} <a href="{{ path('place_create') }}"><input type="button" value="+"></a>
-        {{ form_row(tripForm.save) }}
-        {{ form_row(tripForm.publish) }}
-        <a href="{{ path('trip_home') }}"><input style="background-color: #FFDAB9" type="button" value="Annuler"></a>
-    </div>
+            <div class="form-group col-6">
+                {{ form_row(tripForm.campus) }}
+                {{ form_row(tripForm.city) }}
+                {{ form_row(tripForm.place) }}
+                <a href="{{ path('place_create') }}"><input type="button" value="+"></a>
+            </div>
 
-    </div>
+            </div>
+
+            {{ form_row(tripForm.save) }}
+            {{ form_row(tripForm.publish) }}
+            <a href="{{ path('trip_home') }}"><input style="background-color: #FFDAB9" type="button" value="Annuler"></a>
+
+        </fieldset>
+    </form>
 
     {{ form_end(tripForm) }}
 
