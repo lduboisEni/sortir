@@ -240,8 +240,30 @@ class AppFixtures extends Fixture
     }
 
     //méthode pour ajouter des sorties
-    public function addTrips()
+    public function addTrips(ObjectManager $manager)
     {
+        $campusList = $manager->getRepository(Campus::class)->findAll();
+        $placeList = $manager->getRepository(Place::class)->findAll();
+        $userList = $manager->getRepository(User::class)->findAll();
+        $nameTripList = ["Boire un verre", "Direction la côte!", "Allez voir un match de basket", "Aujourd'hui c'est piscine!"];
+
+        for ($i = 0; $i <= 10; $i++) {
+
+            $trip = new Trip();
+
+            $trip
+                ->setState()
+                ->setOrganiser($this->faker->randomElement($userList))
+                ->setCampus($this->faker->randomElement($campusList))
+                ->setPlace($this->faker->randomElement($placeList))
+                ->setName($this->faker->randomElement($nameTripList))
+                ->setStartTime()
+                ->setLenght($this->faker->numberBetween(1, 300))
+                ->setRegistrationTimeLimit()
+                ->setMaxRegistration($this->faker->numberBetween(1, 30))
+                ->setTripInfos($this->faker->sentence(11));
+        }
+
 
     }
 
