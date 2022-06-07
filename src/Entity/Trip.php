@@ -41,7 +41,6 @@ class Trip
     #[Assert\Positive(message: "Veuillez entrer un nombre positif.")]
     private $maxRegistration;
 
-
     #[ORM\Column(type: 'text', nullable: true)]
     private $tripInfos;
 

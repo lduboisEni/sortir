@@ -16,7 +16,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
 
-
     #[Route('/', name: 'login')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
@@ -83,13 +82,6 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('trip_home');
             }
         }
-
-        //Clic sur annuler : retour à la page d'accueil avec message
-//        if ($profileForm->get('Annuler') && $profileForm->get('Annuler')->isSubmitted()) {
-//
-//            $this->addFlash('message', 'Annulation');
-//            return $this->redirectToRoute('trip_home');
-//        }
 
         return $this->render('user/edit.html.twig', [
             'profileForm' => $profileForm->createView()
