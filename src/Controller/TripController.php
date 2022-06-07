@@ -35,10 +35,15 @@ class TripController extends AbstractController
 
 
         foreach ($allTrips as $trip) {
-            if ($trip->getState()->getDescription() != "Créée" && $trip->getState()->getDescription() != "Ouverte") {
+            if ($trip->getState()->getDescription() != "Créée") {
                 //je calcule la dateTime à laquelle se termine la sortie (date de début + durée grâce à la fonction modify())
                 $endTimeTrip = $trip->getStartTime()->modify('+' . $trip->getLenght() . 'minute');
                 dump("1");
+                if ($trip->getRegistrationTimeLimit()>$now) {
+                    $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
+                    $trip->setState($state);
+                    $tripRepository->add($trip,true);
+                }
                 if ($trip->getRegistrationTimeLimit() < $now) {
                     $state = $stateRepository->findOneBy(array('description' => "Clôturée"));
                     $trip->setState($state);
