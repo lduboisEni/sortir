@@ -221,7 +221,8 @@ class AppFixtures extends Fixture
             ['description' => "Clôturée"],
             ['description' => "En cours"],
             ['description' => "Passée"],
-            ['description' => "Annulée"]
+            ['description' => "Annulée"],
+            ['description' => "Historisée"]
         ];
 
         //je boucle sur chaque élément de ma liste pour créer les états dans ma BDD
