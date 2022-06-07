@@ -53,7 +53,6 @@ class SecurityController extends AbstractController
 
         $profileForm->handleRequest($request);
 
-
         //Clic sur le bouton enregistrer mise à jour du profil avec message
         if ($profileForm->get('Enregistrer') && $profileForm->isSubmitted() && $profileForm->isValid()) {
 
@@ -83,7 +82,6 @@ class SecurityController extends AbstractController
             $this->addFlash('message', 'Profil mis à jour');
             return $this->redirectToRoute('trip_home');
             }
-
         }
 
         //Clic sur annuler : retour à la page d'accueil avec message

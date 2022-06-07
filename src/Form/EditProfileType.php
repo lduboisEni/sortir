@@ -51,7 +51,6 @@ class EditProfileType extends AbstractType
                 'first_options'  => ['label' => 'Mot de passe :'],
                 'second_options' => ['label' => 'Confirmation :'],
                 'constraints' => [
-                    new Blank(),
                     new Length([
                         'min' => 8,
                         'minMessage' => 'Votre mot de passe doit faire 8 caractères minimum',

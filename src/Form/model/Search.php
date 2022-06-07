@@ -18,13 +18,29 @@ class Search{
     #[ORM\JoinColumn(nullable: false)]
     private $campus;
 
-    private String $nameContain;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $nameContain;
+
+    #[ORM\Column(type: 'date')]
+    #[Assert\GreaterThanOrEqual("today", message: "La date de début doit être postérieure à aujourd'hui.")]
     private $begindate;
+
+    #[ORM\Column(type: 'date')]
+    #[Assert\GreaterThanOrEqual("today", message: "La date de fin doit être postérieure à aujourd'hui.")]
     private $enddate;
-    private bool $isOrganiser;
-    private bool $isRegistered;
-    private bool $isNotRegistered;
-    private bool $isPassed;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isOrganiser;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isRegistered;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isNotRegistered;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isPassed;
+
 
     /**
      * @return Campus
@@ -47,7 +63,7 @@ class Search{
     /**
      * @return String
      */
-    public function getNameContain(): string
+    public function getNameContain(): ?string
     {
         return $this->nameContain;
     }
@@ -56,7 +72,7 @@ class Search{
      * @param String $nameContain
      * @return Search
      */
-    public function setNameContain(string $nameContain): Search
+    public function setNameContain(?string $nameContain): Search
     {
         $this->nameContain = $nameContain;
         return $this;
@@ -101,7 +117,7 @@ class Search{
     /**
      * @return bool
      */
-    public function isOrganiser(): bool
+    public function isOrganiser(): ?bool
     {
         return $this->isOrganiser;
     }
@@ -110,7 +126,7 @@ class Search{
      * @param bool $isOrganiser
      * @return Search
      */
-    public function setIsOrganiser(bool $isOrganiser): Search
+    public function setIsOrganiser(?bool $isOrganiser): Search
     {
         $this->isOrganiser = $isOrganiser;
         return $this;
@@ -119,7 +135,7 @@ class Search{
     /**
      * @return bool
      */
-    public function isRegistered(): bool
+    public function isRegistered(): ?bool
     {
         return $this->isRegistered;
     }
@@ -128,7 +144,7 @@ class Search{
      * @param bool $isRegistered
      * @return Search
      */
-    public function setIsRegistered(bool $isRegistered): Search
+    public function setIsRegistered(?bool $isRegistered): Search
     {
         $this->isRegistered = $isRegistered;
         return $this;
@@ -137,7 +153,7 @@ class Search{
     /**
      * @return bool
      */
-    public function isNotRegistered(): bool
+    public function isNotRegistered(): ?bool
     {
         return $this->isNotRegistered;
     }
@@ -146,7 +162,7 @@ class Search{
      * @param bool $isNotRegistered
      * @return Search
      */
-    public function setIsNotRegistered(bool $isNotRegistered): Search
+    public function setIsNotRegistered(?bool $isNotRegistered): Search
     {
         $this->isNotRegistered = $isNotRegistered;
         return $this;
@@ -155,7 +171,7 @@ class Search{
     /**
      * @return bool
      */
-    public function isPassed(): bool
+    public function isPassed(): ?bool
     {
         return $this->isPassed;
     }
@@ -164,7 +180,7 @@ class Search{
      * @param bool $isPassed
      * @return Search
      */
-    public function setIsPassed(bool $isPassed): Search
+    public function setIsPassed(?bool $isPassed): Search
     {
         $this->isPassed = $isPassed;
         return $this;

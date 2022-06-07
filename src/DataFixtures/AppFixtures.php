@@ -99,7 +99,6 @@ class AppFixtures extends Fixture
     //méthode pour ajouter des lieux
     public function addPlaces(ObjectManager $manager)
     {
-
         //je récupère la liste de ville de ma BDD
         $cities = $manager->getRepository(City::class)->findAll();
 

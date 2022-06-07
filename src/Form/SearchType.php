@@ -36,28 +36,28 @@ class SearchType extends AbstractType
             ->add('begindate', DateType::class, [
                 'label' => 'Entre ',
                 'widget' => 'single_text',
-                    'required' => false
+                'required' => false
             ])
             ->add('enddate', DateType::class, [
                 'label' => 'et ',
                 'widget' => 'single_text',
-                    'required' => false
+                'required' => false
             ])
             ->add('isOrganiser', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur/trice ',
-                    'required' => false
+                'required' => false
             ])
             ->add('isRegistered', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je suis inscrit/e ',
-                    'required' => false
+                'required' => false
             ])
             ->add('isNotRegistered', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit/e ',
-                    'required' => false
+                'required' => false
             ])
             ->add('isPassed', CheckboxType::class, [
                 'label' => 'Sorties passées ',
-                    'required' => false
+                'required' => false
             ])
 
             ->add('Rechercher', SubmitType::class, [
