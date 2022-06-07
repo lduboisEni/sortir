@@ -216,10 +216,31 @@ class TripController extends AbstractController
     }
 
     #[Route('/cancel/{id}', name: 'cancel')]
-    public function cancel($id, TripRepository $tripRepository): Response
+    public function cancel($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request): Response
     {
         //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
+
+        //récupération de la sortie cliquée
+        $trip = $tripRepository->find($id);
+
+        //modification du statut de la sortie
+        $state = $stateRepository->findOneBy(array('description'=>"Annulée"));
+        $trip->setState($state);
+
+        if($request->isMethod('POST')) {
+            //récupération du motif saisi et set de tripInfos
+            $motif = $request->request->get("motif");
+            $trip->setTripInfos($motif);
+
+            //mise à jour de la bdd
+            $tripRepository->add($trip, true);
+
+            //création du message
+            $this->addFlash('message', "Ta sortie a été annulée !");
+
+            return $this->redirectToRoute('trip_home');
+        }
 
         return $this->render('trip/cancel.html.twig', [
             'id' => $id,
@@ -239,31 +260,4 @@ class TripController extends AbstractController
         return $this->redirectToRoute('trip_home');
     }
 
-    #[Route('/cancelTrip/{id}', name: 'cancelTrip')]
-    public function cancelFuncTrip($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request): Response
-    {
-        //récupération de la sortie cliquée
-        $trip = $tripRepository->find($id);
-        dump( '1');
-
-        //modification du statut de la sortie
-        $state = $stateRepository->findOneBy(array('description'=>"Annulée"));
-        $trip->setState($state);
-        dump( '2');
-
-        //récupération du motif saisi et set de tripInfos
-        $motif = $request->get("motif", "");
-        $trip->setTripInfos($motif);
-        dump( '3');
-
-        //mise à jour de la bdd
-        $tripRepository->add($trip, true);
-        dump( '4');
-
-        //création du message
-        $this->addFlash('message', "Ta sortie a été annulée !");
-        dump('5');
-        return $this->redirectToRoute('trip_home');
-
-    }
 }

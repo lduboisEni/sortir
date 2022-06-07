@@ -13,7 +13,7 @@
         <form method="post">
             <label for="motif">Motif : </label>
             <textarea id="motif" name="motif" rows="5" required> {{trip.tripInfos}}</textarea>
-            <button name="cancel" onclick="location.href='{{ path('trip_cancelTrip', {'id' : trip.id}) }})'" id="cancel">Enregistrer</button>
+            <button name="cancel" id="cancel">Enregistrer</button>
         </form>
 
         <a href="{{ path('trip_home') }}"><button>Annuler</button></a>
