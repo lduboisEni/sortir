@@ -218,7 +218,7 @@ class TripController extends AbstractController
     }
 
     #[Route('/cancelTrip/{id}', name: 'cancelTrip')]
-    public function cancelFuncTrip($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request)
+    public function cancelFuncTrip($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request): Response
     {
 
         //récupération de la sortie cliquée
@@ -234,8 +234,11 @@ class TripController extends AbstractController
 
         //mise à jour de la bdd et création du message
         $tripRepository->add($trip, true);
-        $this->addFlash('message', "Ta sortie a été annulée !");
 
+        dump('coucou');
+
+        $this->addFlash('message', "Ta sortie a été annulée !");
+        dump('2');
         return $this->redirectToRoute('trip_home');
 
     }
