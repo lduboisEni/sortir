@@ -173,6 +173,9 @@ class TripController extends AbstractController
     #[Route('/edit/{id}', name: 'edit')]
     public function edit($id, TripService $tripService, TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
+        //initialisation du message add
+        $message = "";
+
         //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
 
@@ -188,9 +191,8 @@ class TripController extends AbstractController
                   $tripService->save($trip, $tripRepository, $stateRepository);
 
                   $tripRepository->add($trip, true);
-                  $this->addFlash('message', "Ta proposition de sortie est enregistrée!");
+                  $message = "Ta proposition de sortie est enregistrée!";
 
-                return $this->redirectToRoute('trip_home');
             }
 
             //si bouton 'publish'
@@ -204,13 +206,14 @@ class TripController extends AbstractController
                 } else {
                     $tripService->save($trip, $tripRepository, $stateRepository);
                     $tripRepository->add($trip, true);
-
                     $tripService->publish($trip, $tripRepository, $stateRepository);
-                }
 
-                return $this->redirectToRoute('trip_home');
+                }
+                $message = "Ta sortie a été publiée !";
             }
 
+            $this->addFlash('message', $message);
+            return $this->redirectToRoute('trip_home');
         }
         return $this->render('trip/edit.html.twig',[
             'tripForm' => $tripForm2->createView(),
