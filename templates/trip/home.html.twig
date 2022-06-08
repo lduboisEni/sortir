@@ -77,7 +77,7 @@
             {% endif %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
-                <button style="background-color: #FFFFE0" onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
+                <button style="background-color: #FFFFE0" onclick="location.href='{{ path ('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
                     Publier
                 </button>
                 <button style="background-color: #FFF0F5" onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">Modifier

@@ -13,6 +13,7 @@ use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
+use App\Service\TripService;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,25 +129,8 @@ class TripController extends AbstractController
 
     }
 
-    #[Route('/publish/{id}', name: 'publish')]
-    public function publish($id, TripRepository $tripRepository, StateRepository $stateRepository)
-    {
-        //je récupère la sortie qui a été choisie
-        $trip = $tripRepository->find($id);
-
-        //l'état de la sortie passe à "Ouverte"
-        $state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
-        $trip->setState($state);
-
-        //modification de la sortie en bddd et ajout du message
-        $tripRepository->add($trip, true);
-        $this->addFlash('message', "Ta proposition de sortie a été publiée !");
-
-        return $this->redirectToRoute('trip_home');
-    }
-
     #[Route('/create', name: 'create')]
-    public function create(TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
+    public function create(TripService $tripService, TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
 
         //création d'une nouvelle sortie
@@ -157,6 +141,8 @@ class TripController extends AbstractController
             ->setPlace($placeRepository->findOneBy(array('name' => "Cinema")))
             ->setCampus($user->getCampus())
             ->addUser($user);
+        //initialisation du message add
+        $message = "";
 
         //création du formulaire
         $tripForm = $this->createForm(TripType::class, $trip);
@@ -167,14 +153,11 @@ class TripController extends AbstractController
 
             //si bouton 'save'
             if ($tripForm->get('save')->isClicked()) {
-                //l'état de la sortie passe à "Créée"
-                $state = $stateRepository->findOneBy(array('description' => "Créée"));
-                $trip->setState($state);
 
-                $tripRepository->add($trip, true);
-                $this->addFlash('message', "Ta proposition de sortie est enregistrée!");
+                $tripService->save($trip, $tripRepository, $stateRepository);
 
-                return $this->redirectToRoute('trip_home');
+                $message = 'Ta proposition de sortie est enregistrée!';
+
             }
 
             //si bouton 'publish'
@@ -182,21 +165,30 @@ class TripController extends AbstractController
 
                 //si la sortie est déjà créée on la publie
                 if($trip->getState() == "Créée") {
-                  $this->publish($trip->getId(), $tripRepository, $stateRepository);
+
+                    //appel à la fonction Publish du service Trip
+                    $tripService->publish($trip->getId(), $tripRepository, $stateRepository);
+
+                    $message = "Ta proposition de sortie a été publiée !";
 
                 //sinon on l'enregistre avant de la publier
                 } else {
-                    $state = $stateRepository->findOneBy(array('description' => "Créée"));
-                    $trip->setState($state);
-                    $tripRepository->add($trip, true);
 
-                    $this->publish($trip->getId(), $tripRepository, $stateRepository);
+                    //appel à la fonction Save du service Trip
+                    $tripService->save($trip->getId(), $tripRepository, $stateRepository);
+
+                    //puis appel à la fonction Publish du service Trip
+                    $tripService->publish($trip->getId(), $tripRepository, $stateRepository);
+
+                    $message = "Ta proposition de sortie a été publiée !";
+
                 }
-
-                return $this->redirectToRoute('trip_home');
             }
 
+            $this->addFlash('message', $message);
+            return $this->redirectToRoute('trip_home');
         }
+
         return $this->render('trip/create.html.twig',
             ['tripForm' => $tripForm->createView(),
                 'user' => $user]);
@@ -214,7 +206,7 @@ class TripController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'edit')]
-    public function edit($id, TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
+    public function edit($id, TripService $tripService, TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
         //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
@@ -228,12 +220,10 @@ class TripController extends AbstractController
 
             //si bouton 'save'
             if ($tripForm2->get('save')->isClicked()) {
-                //l'état de la sortie passe à "Créée"
-                $state = $stateRepository->findOneBy(array('description'=>"Créée"));
-                $trip->setState($state);
+                  $tripService->save($trip, $tripRepository, $stateRepository);
 
-                $tripRepository->add($trip, true);
-                $this->addFlash('message', "Ta proposition de sortie est enregistrée!");
+                  $tripRepository->add($trip, true);
+                  $this->addFlash('message', "Ta proposition de sortie est enregistrée!");
 
                 return $this->redirectToRoute('trip_home');
             }
@@ -243,15 +233,14 @@ class TripController extends AbstractController
 
                 //si la sortie est déjà créée on la publie
                 if($trip->getState() == "Créée") {
-                    $this->publish($trip->getId(), $tripRepository, $stateRepository);
+                    $tripService->publish($trip, $tripRepository, $stateRepository);
 
                     //sinon on l'enregistre avant de la publier
                 } else {
-                    $state = $stateRepository->findOneBy(array('description' => "Créée"));
-                    $trip->setState($state);
+                    $tripService->save($trip, $tripRepository, $stateRepository);
                     $tripRepository->add($trip, true);
 
-                    $this->publish($trip->getId(), $tripRepository, $stateRepository);
+                    $tripService->publish($trip, $tripRepository, $stateRepository);
                 }
 
                 return $this->redirectToRoute('trip_home');
@@ -281,7 +270,8 @@ class TripController extends AbstractController
         if($request->isMethod('POST')) {
             //récupération du motif saisi et set de tripInfos
             $motif = $request->request->get("motif");
-            $trip->setTripInfos($motif);
+            $description = $trip->getTripInfos();
+            $trip->setTripInfos('description : ' . $description . 'motif d annulation'. $motif );
 
             //mise à jour de la bdd
             $tripRepository->add($trip, true);
@@ -308,6 +298,17 @@ class TripController extends AbstractController
         $this->addFlash('message', 'Sortie supprimée! ');
 
         return $this->redirectToRoute('trip_home');
+    }
+
+    #[Route('/publish/{id}', name: 'publish')]
+    public function callPublish($id, TripService $tripService, TripRepository $tripRepository, StateRepository $stateRepository)
+    {
+        $trip = $tripRepository->find($id);
+
+        $tripService->publish($trip, $tripRepository, $stateRepository);
+
+        return $this->redirectToRoute('trip_home');
+
     }
 
 }
