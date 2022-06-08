@@ -6,33 +6,35 @@
 
     <form>
         <fieldset>
-
             <legend><h2> Modifier une sortie </h2></legend>
 
-            <div class="form-group row">
+    <div class="form-group row">
 
-            <div class="form-group col-6">
-                {{ form_row(tripForm.name) }}
-                {{ form_row(tripForm.startTime) }}
-                {{ form_row(tripForm.registrationTimeLimit) }}
-                {{ form_row(tripForm.maxRegistration) }}
-                {{ form_row(tripForm.lenght) }}
-                {{ form_row(tripForm.tripInfos) }}
-            </div>
+    <div class="form-group col-6">
+        {{ form_row(tripForm.name) }}
+        {{ form_row(tripForm.startTime) }}
+        {{ form_row(tripForm.registrationTimeLimit) }}
+        {{ form_row(tripForm.maxRegistration) }}
+        {{ form_row(tripForm.lenght) }}
+        {{ form_row(tripForm.tripInfos) }}
+    </div>
 
-            <div class="form-group col-6">
-                {{ form_row(tripForm.campus) }}
-                {{ form_row(tripForm.city) }}
-                {{ form_row(tripForm.place) }}
-            </div>
+    <div class="form-group col-6">
+        {{ form_row(tripForm.campus) }}
+        {{ form_row(tripForm.city) }}
+        {{ form_row(tripForm.place) }}
+    </div>
 
-            </div>
+    </div>
 
             <div>
-            {{ form_row(tripForm.save) }}
-            {{ form_row(tripForm.publish) }}
-            <a href="{{ path('trip_delete', {'id' : trip.id}) }}"><button style="background-color: #FF869E">Supprimer la sortie</button></a>
-            <a href="{{ path('trip_home') }}"><button style="background-color: #FFDAB9">Annuler</button></a>
+                {{ form_row(tripForm.save) }}
+                {{ form_row(tripForm.publish) }}
+
+                <a href="{{ path('trip_delete', {'id' : trip.id}) }}"><button style="background-color: #FF869E">Supprimer la sortie</button></a>
+                <a href="{{ path('trip_home') }}"><button style="background-color: #FFDAB9">Annuler</button></a>
+
+                {{ form_end(tripForm) }}
             </div>
 
             {{ form_end(tripForm) }}
