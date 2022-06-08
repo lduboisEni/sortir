@@ -250,7 +250,7 @@ class AppFixtures extends Fixture
                 "Go Hellfest", "Faire un gros pic-nique", "Tournoi de palet", "Sortie disc golf (demander à Léa)", "La ribouldingue!"];
 
 
-        for ($j = 0; $j <= 10; $j++) {
+        for ($j = 0; $j <= 30; $j++) {
 
             $trip = new Trip();
             $time = $this->faker->dateTimeBetween('-60 days', '+ 30 days');
