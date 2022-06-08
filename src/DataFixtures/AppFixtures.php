@@ -247,26 +247,28 @@ class AppFixtures extends Fixture
         $stateList = $manager->getRepository(State::class)->findAll();
         $nameTripList =
             ["Boire un verre", "Direction la côte!", "Go match de basket", "Aujourd'hui c'est piscine!",
-                "Go Hellfest", "Faire un gros pic-nique", "Tournoi de palet", "Sortie disc golf (demander à Léa)"];
+                "Go Hellfest", "Faire un gros pic-nique", "Tournoi de palet", "Sortie disc golf (demander à Léa)", "La ribouldingue!"];
 
 
         for ($j = 0; $j <= 10; $j++) {
 
             $trip = new Trip();
-            $startTime = $this->faker->dateTimeBetween('-30 days', '+ 30 days');
-            $timeLimit = $this->faker->dateTimeBetween('-30 days', $startTime);
+            $time = $this->faker->dateTimeBetween('-60 days', '+ 30 days');
+            $timeLimit = $this->faker->dateTimeBetween('-60 days', $time);
+            $user = $this->faker->randomElement($userList);
 
             $trip
                 ->setState($this->faker->randomElement($stateList))
-                ->setOrganiser($this->faker->randomElement($userList))
+                ->setOrganiser($user)
                 ->setCampus($this->faker->randomElement($campusList))
                 ->setPlace($this->faker->randomElement($placeList))
                 ->setName($this->faker->randomElement($nameTripList))
-                ->setStartTime($startTime)
+                ->setStartTime($time)
                 ->setLenght($this->faker->numberBetween(1, 300))
                 ->setRegistrationTimeLimit($timeLimit)
                 ->setMaxRegistration($this->faker->numberBetween(1, 30))
-                ->setTripInfos($this->faker->sentence(11));
+                ->setTripInfos($this->faker->sentence(11))
+                ->addUser($user);
 
             $manager->persist($trip);
         }

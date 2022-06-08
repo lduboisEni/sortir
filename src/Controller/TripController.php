@@ -13,6 +13,7 @@ use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
+use App\Service\StateService;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class TripController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(Request $request, TripRepository $tripRepository, StateRepository $stateRepository): Response
+    public function index(Request $request, TripRepository $tripRepository, StateRepository $stateRepository, StateService $stateService): Response
     {
+        $stateService->updateState();
+
         $search = new Search();
         $user = $this->getUser();
 
@@ -41,7 +44,7 @@ class TripController extends AbstractController
     }
 
     #[Route('/subscribe/{id}', name: 'subscribe')]
-    public function subscribe($id, TripRepository $tripRepository)
+    public function subscribe($id, TripRepository $tripRepository, StateRepository $stateRepository)
     {
 
         //je récupère mon user en cours
@@ -52,6 +55,12 @@ class TripController extends AbstractController
         //j'ajoute le user à la liste des users de la sortie et pousse en bdd
         $trip->getUsers()->add($user);
         $tripRepository->add($trip, true);
+
+        //je passe l'état à "Clôturée" si le nombre d'inscrit a été atteint
+        if($trip->getUsers()->count() === $trip->getMaxRegistration()){
+            $state =$stateRepository->findOneBy(array('description' => "Clôturée"));
+            $trip->setState($state);
+        }
 
         $this->addFlash('message', "Félicitations vous êtes inscrit !");
 

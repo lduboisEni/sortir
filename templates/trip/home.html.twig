@@ -49,9 +49,9 @@
             </h4>
             <p>Sortie : {{ trip.state.description }}</p>
             <p>Organisateur : {{ trip.organiser.firstname }} {{ trip.organiser.name }}</p>
-            <p>Date de la sortie : le {{ trip.startTime|date("d M Y") }} à {{ trip.startTime|date("H") }}
+            <p>Date de la sortie : le {{ trip.startTime|format_datetime(locale='fr',pattern="dd MMMM YYYY") }} à {{ trip.startTime|date("H") }}
                 h{{ trip.startTime|date("i") }}</p>
-            <p>Clôture des inscriptions : {{ trip.registrationTimeLimit|date("d M Y") }}</p>
+            <p>Clôture des inscriptions : {{ trip.registrationTimeLimit|format_datetime(locale='fr',pattern="dd MMMM YYYY") }}</p>
             <p>Nombre d'inscrits : {{ trip.users.count() }}/{{ trip.maxRegistration }}</p>
 
 
