@@ -13,6 +13,8 @@ use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
+use App\Service\StateService;
+use App\Service\TripService;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

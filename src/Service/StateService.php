@@ -28,13 +28,12 @@ class StateService
         //je récupère la date du jour
         $now = new \DateTime('now');
 
-        //je calcule la dateTime à laquelle se termine la sortie (date de début + durée grâce à la fonction modify())
-        $start = $trip->getStartTime();
-        $endTimeTrip = $start->modify('+' . $trip->getLenght() . 'minute');
-        $archived = $endTimeTrip->modify('+1 month');
-
-
         foreach ($allTrips as $trip) {
+            //je calcule la dateTime à laquelle se termine la sortie (date de début + durée grâce à la fonction modify())
+            $endTimeTrip = clone $trip->getStartTime();
+            $endTimeTrip->modify('+' . $trip->getLenght() . 'minute');
+            $archived = clone $endTimeTrip;
+            $archived->modify('+1 month');
 
             if ($trip->getRegistrationTimeLimit() < $now &&
                 ($trip->getState()->getDescription() === "Ouverte" &&
@@ -44,7 +43,7 @@ class StateService
                 $trip->setState($state);
             }
 
-            if ($start <= $now &&
+            if ($trip->getStartTime() <= $now &&
                 $now >= $endTimeTrip &&
                 ($trip->getState()->getDescription() === "Ouverte" &&
                 $trip->getState()->getDescription() !== "Créée")) {

@@ -244,7 +244,7 @@ class AppFixtures extends Fixture
         $campusList = $manager->getRepository(Campus::class)->findAll();
         $placeList = $manager->getRepository(Place::class)->findAll();
         $userList = $manager->getRepository(User::class)->findAll();
-        $stateList = $manager->getRepository(State::class)->findAll();
+        $state = $manager->getRepository(State::class)->findOneBy(array('description' => "Ouverte"));
         $nameTripList =
             ["Boire un verre", "Direction la côte!", "Go match de basket", "Aujourd'hui c'est piscine!",
                 "Go Hellfest", "Faire un gros pic-nique", "Tournoi de palet", "Sortie disc golf (demander à Léa)", "La ribouldingue!"];
@@ -258,7 +258,7 @@ class AppFixtures extends Fixture
             $user = $this->faker->randomElement($userList);
 
             $trip
-                ->setState($this->faker->randomElement($stateList))
+                ->setState($state)
                 ->setOrganiser($user)
                 ->setCampus($this->faker->randomElement($campusList))
                 ->setPlace($this->faker->randomElement($placeList))
