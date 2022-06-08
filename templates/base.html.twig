@@ -69,12 +69,17 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
+
                     <div class="collapse navbar-collapse" id="navbarColor02">
+                        <div class="nav-header">
+                            <ul class="navbar-nav me-auto">
+                            <a class="nav-link" href="{{ path('trip_home') }}"
+                               title="Aller à l'accueil">Accueil</a></a>
+                            </ul>
+                        </div>
                         <ul class="navbar-nav me-auto">
                                 <a class="nav-link" href="" title="Villes">Villes</a>
                                 <a class="nav-link" href="" title="Campus">Campus</a>
-                                <a class="nav-link" href="{{ path('trip_home') }}"
-                                   title="Aller à l'accueil">Accueil</a></a>
                                 <a class="nav-link" href="{{ path('edit') }}" title="Mon profil">Mon profil</a></a>
                                 <a class="nav-link" href="{{ path('logout') }}" title="Se déconnecter">Se
                                     déconnecter</a>
