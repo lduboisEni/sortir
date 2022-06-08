@@ -19,9 +19,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Blank;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Config\Framework\AssetsConfig;
+use Webmozart\Assert\Assert;
 
 class EditProfileType extends AbstractType
 {
@@ -48,6 +50,7 @@ class EditProfileType extends AbstractType
                 'invalid_message' => 'Les deux mots de passe ne sont pas identiques',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => false,
+                'mapped' => false,
                 'first_options'  => ['label' => 'Mot de passe :'],
                 'second_options' => ['label' => 'Confirmation :'],
                 'constraints' => [
@@ -64,9 +67,19 @@ class EditProfileType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'name',
             ])
-            ->add('imageFile', FileType::class, [
+            ->add('image', FileType::class, [
                 'label' => 'Ma photo de profil :',
-                'mapped' => false
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                           'image/*',
+                        ],
+                        'mimeTypesMessage' => 'Merci de télécharger un fichier au format image'
+                    ])
+                ]
             ])
             ->add('Enregistrer', SubmitType::class, [
                 'label' => "Enregister",

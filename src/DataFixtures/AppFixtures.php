@@ -109,15 +109,15 @@ class AppFixtures extends Fixture
 
             $place = new Place();
 
-            $place
-                ->setCity($this->faker->randomElement($cities))
-                ->setName($this->faker->randomElement($places))
-                ->setStreet($this->faker->streetName)
-                ->setLat($this->faker->latitude)
-                ->setLongitude($this->faker->longitude);
+        $place
+            ->setCity($this->faker->randomElement($cities))
+            ->setName($this->faker->randomElement($places))
+            ->setStreet($this->faker->streetName)
+            ->setLat($this->faker->latitude)
+            ->setLongitude($this->faker->longitude);
 
 
-            $manager->persist($place);
+        $manager->persist($place);
         }
 
         $manager->flush();
@@ -208,7 +208,7 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
         $manager->flush();
-    }
+       }
 
     public function addStates(ObjectManager $manager)
     {
