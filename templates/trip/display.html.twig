@@ -16,12 +16,12 @@
         </div>
 
         <div class="col-6">
-            <p>Campus: </p>
-            <p>Lieu: </p>
-            <p>Rue: </p>
-            <p>Code postal: </p>
-            <p>Latitude: </p>
-            <p>Longitude: </p>
+            <p>Campus: {{trip.campus.name}}</p>
+            <p>Lieu: {{trip.place.name}}</p>
+            <p>Rue: {{trip.place.street}}</p>
+            <p>Code postal: {{trip.place.city.cp}}</p>
+            <p>Latitude: {{trip.place.lat}}</p>
+            <p>Longitude: {{trip.place.longitude}}</p>
         </div>
 
     </div>
