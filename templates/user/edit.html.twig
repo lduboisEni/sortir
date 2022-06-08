@@ -8,12 +8,13 @@
         <h1>Modification du profil de {{ app.user.firstname}} {{ app.user.name }}</h1>
     </div>
 
+
     <div class="form-group row">
 
         <div class="form-group col-2">
             <div>
-                <img src="{{ asset('/uploads/' ~app.user.image) }}">
-            </div>
+                <img src="{{ asset('/uploads/' ~app.user.image) }}" alt="Photo du profil">
+             </div>
         </div>
 
     {{form_start(profileForm)}}
@@ -28,11 +29,11 @@
             {{ form_row(profileForm.image) }}
             {{ form_row(profileForm.campus) }}
             {{ form_row(profileForm.Enregistrer) }}
-        </div>
+
     {{form_end(profileForm)}}
 
     <a href="{{ path('trip_home') }}"><button style="background-color: #FFDAB9" >Annuler</button></a>
-
+        </div>
     </div>
 
 {% endblock %}
