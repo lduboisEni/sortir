@@ -37,8 +37,7 @@ class AppFixtures extends Fixture
         $this->addUsers($manager);
         $this->addStates($manager);
         $this->addPlaces($manager);
-        //$this->addTrips();
-
+        $this->addTrips($manager);
 
     }
 
@@ -108,17 +107,17 @@ class AppFixtures extends Fixture
         //je crée 10 lieux
         for ($i = 0; $i <= 10; $i++) {
 
-        $place = new Place();
+            $place = new Place();
 
-        $place
-            ->setCity($this->faker->randomElement($cities))
-            ->setName($this->faker->randomElement($places))
-            ->setStreet($this->faker->streetName)
-            ->setLat($this->faker->latitude)
-            ->setLongitude($this->faker->longitude);
+            $place
+                ->setCity($this->faker->randomElement($cities))
+                ->setName($this->faker->randomElement($places))
+                ->setStreet($this->faker->streetName)
+                ->setLat($this->faker->latitude)
+                ->setLongitude($this->faker->longitude);
 
 
-        $manager->persist($place);
+            $manager->persist($place);
         }
 
         $manager->flush();
@@ -209,7 +208,7 @@ class AppFixtures extends Fixture
         $manager->persist($user);
 
         $manager->flush();
-       }
+    }
 
     public function addStates(ObjectManager $manager)
     {
@@ -245,26 +244,33 @@ class AppFixtures extends Fixture
         $campusList = $manager->getRepository(Campus::class)->findAll();
         $placeList = $manager->getRepository(Place::class)->findAll();
         $userList = $manager->getRepository(User::class)->findAll();
-        $nameTripList = ["Boire un verre", "Direction la côte!", "Allez voir un match de basket", "Aujourd'hui c'est piscine!"];
+        $stateList = $manager->getRepository(State::class)->findAll();
+        $nameTripList =
+            ["Boire un verre", "Direction la côte!", "Go match de basket", "Aujourd'hui c'est piscine!",
+                "Go Hellfest", "Faire un gros pic-nique", "Tournoi de palet", "Sortie disc golf (demander à Léa)"];
 
-        for ($i = 0; $i <= 10; $i++) {
+
+        for ($j = 0; $j <= 10; $j++) {
 
             $trip = new Trip();
+            $startTime = $this->faker->dateTimeBetween('-30 days', '+ 30 days');
+            $timeLimit = $this->faker->dateTimeBetween('-30 days', $startTime);
 
             $trip
-                ->setState()
+                ->setState($this->faker->randomElement($stateList))
                 ->setOrganiser($this->faker->randomElement($userList))
                 ->setCampus($this->faker->randomElement($campusList))
                 ->setPlace($this->faker->randomElement($placeList))
                 ->setName($this->faker->randomElement($nameTripList))
-                ->setStartTime()
+                ->setStartTime($startTime)
                 ->setLenght($this->faker->numberBetween(1, 300))
-                ->setRegistrationTimeLimit()
+                ->setRegistrationTimeLimit($timeLimit)
                 ->setMaxRegistration($this->faker->numberBetween(1, 30))
                 ->setTripInfos($this->faker->sentence(11));
+
+            $manager->persist($trip);
         }
-
-
+        $manager->flush();
     }
 
 }
