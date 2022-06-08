@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Modification du profil de {{ app.user.firstname}} {{ app.user.name }}{% endblock %}
-
+{%block stylesheet%}{{parent()}}
+<link rel="stylesheet" href="{{asset('css/editprofileCSS.css')}}">
+{%endblock%}
 {% block main %}
 
     <div class="text-center">
@@ -10,10 +12,8 @@
 
     <div class="form-group row">
 
-        <div class="form-group col-2">
-            <div>
-                <img src="{{ asset('uploads/' ~app.user.image) }}" alt="Photo du profil">
-             </div>
+        <div class="form-group col-12 col-lg-4" >
+                <img src="{{ asset('uploads/' ~app.user.image)}}" id="profile-img">
         </div>
 
     {{form_start(profileForm)}}
@@ -31,7 +31,7 @@
 
     {{form_end(profileForm)}}
 
-    <a href="{{ path('trip_home') }}"><button style="background-color: #FFDAB9" >Annuler</button></a>
+    <a href="{{ path('trip_home') }}" id="cancel-link"><button style="background-color: #3CB371" >Annuler</button></a>
         </div>
     </div>
 
