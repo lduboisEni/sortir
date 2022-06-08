@@ -40,8 +40,6 @@ class StateService
             //ajout d'un mois pour l'archivage
             $archived->modify('+1 month');
 
-            //Si la date limite d'inscription est passée et
-            //que le statut est Ouvert et différent de créé =>"Clôturée"
             if ($trip->getRegistrationTimeLimit() < $now &&
                 $trip->getState()->getDescription() === "Ouverte" &&
                     $trip->getState()->getDescription() !== "Créée") {
@@ -54,8 +52,10 @@ class StateService
             //que la date de fin n'est pas passée avec statut "Ouvert" et différent de "Créée" =>"En cours"
             if ($trip->getStartTime() <= $now &&
                 $now >= $endTimeTrip &&
-                $trip->getState()->getDescription() === "Ouverte" &&
-                $trip->getState()->getDescription() !== "Créée") {
+                $trip->getState()->getDescription() !== "Créée" &&
+                ($trip->getState()->getDescription() === "Ouverte" ||
+                $trip->getState()->getDescription() === "Clôturée")
+                ) {
 
                 $state = $this->stateRepository->findOneBy(array('description' => "En cours"));
                 $trip->setState($state);
@@ -72,21 +72,16 @@ class StateService
                 $trip->setState($state);
 
             }
-
-            //Si la date de fin
-            if ($archived >= $now &&
-                $trip->getState()->getDescription() === "Passée" ||
-                ($trip->getState()->getDescription() === "Annulée" &&
-                    $trip->getState()->getDescription() !== "Créée" )) {
+            if ($archived <= $now &&
+                $trip->getState()->getDescription() !== "Créée" &&
+                ($trip->getState()->getDescription() === "Passée" ||
+                    $trip->getState()->getDescription() === "Annulée" )) {
 
                 $state = $this->stateRepository->findOneBy(array('description' => "Historisée"));
                 $trip->setState($state);
-
             }
-
             $this->manager->persist($trip);
             $this->manager->flush();
         }
-
     }
 }
