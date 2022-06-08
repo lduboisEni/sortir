@@ -40,6 +40,10 @@ class StateService
             //ajout d'un mois pour l'archivage
             $archived->modify('+1 month');
 
+
+            //Si la date limite d'inscription est passée et
+            //que le statut est "Ouverte" et défférent de "Créée"
+            //alors setState=>"Clôturée"
             if ($trip->getRegistrationTimeLimit() < $now &&
                 $trip->getState()->getDescription() === "Ouverte" &&
                     $trip->getState()->getDescription() !== "Créée") {
@@ -49,7 +53,8 @@ class StateService
             }
 
             //Si la date de début est passée mais
-            //que la date de fin n'est pas passée avec statut "Ouvert" et différent de "Créée" =>"En cours"
+            //que la date de fin n'est pas passée avec statut "Ouvert" ou "Clôturée"
+            // et différent de "Créée" alors setState=>"En cours"
             if ($trip->getStartTime() <= $now &&
                 $now >= $endTimeTrip &&
                 $trip->getState()->getDescription() !== "Créée" &&
@@ -59,7 +64,6 @@ class StateService
 
                 $state = $this->stateRepository->findOneBy(array('description' => "En cours"));
                 $trip->setState($state);
-
             }
 
             //Si la date de fin de la sortie est passée et
@@ -70,8 +74,11 @@ class StateService
 
                 $state = $this->stateRepository->findOneBy(array('description' => "Passée"));
                 $trip->setState($state);
-
             }
+
+            //Si la date de fin de la sortie + 1 mois est passée
+            //et si le statut est différent de "Créée" et égal à Passée ou Annulée
+            //alors setState=>"historisée"
             if ($archived <= $now &&
                 $trip->getState()->getDescription() !== "Créée" &&
                 ($trip->getState()->getDescription() === "Passée" ||
