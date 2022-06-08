@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Modification du profil de {{ app.user.firstname}} {{ app.user.name }}{% endblock %}
-
+{%block stylesheet%}{{parent()}}
+<link rel="stylesheet" href="{{asset('css/editprofile.css')}}">
+{%endblock%}
 {% block main %}
 
     <div class="text-center">
@@ -12,7 +14,7 @@
 
         <div class="form-group col-2">
             <div>
-                <img src="{{ asset('/uploads/' ~app.user.image) }}">
+                <img src="{{ asset('../../public/uploads/' ~ app.user.getImage())}}">
             </div>
         </div>
 
