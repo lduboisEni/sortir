@@ -32,9 +32,10 @@
             {{ form_row(tripForm.publish) }}
             <a href="{{ path('trip_home') }}"><input style="background-color: #FFDAB9" type="button" value="Annuler"></a>
 
+            {{ form_end(tripForm) }}
         </fieldset>
     </form>
 
-    {{ form_end(tripForm) }}
+
 
 {% endblock %}

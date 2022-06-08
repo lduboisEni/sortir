@@ -2,7 +2,7 @@
 
 {% block title %}Modification du profil de {{ app.user.firstname}} {{ app.user.name }}{% endblock %}
 {%block stylesheet%}{{parent()}}
-<link rel="stylesheet" href="{{asset('css/editprofile.css')}}">
+<link rel="stylesheet" href="{{asset('css/editprofileCSS.css')}}">
 {%endblock%}
 {% block main %}
 
@@ -12,15 +12,13 @@
 
     <div class="form-group row">
 
-        <div class="form-group col-2">
-            <div>
-                <img src="{{ asset('../../public/uploads/' ~ app.user.getImage())}}">
-            </div>
+        <div class="form-group col-12 col-lg-4" >
+                <img src="{{ asset('uploads/' ~ app.user.getImage())}}" id="profile-img">
         </div>
 
     {{form_start(profileForm)}}
 
-        <div class="form group col-8">
+        <div class="form group col-12 col-lg-8" id="edit-form">
             {{ form_row(profileForm.pseudo) }}
             {{ form_row(profileForm.name) }}
             {{ form_row(profileForm.firstname) }}
@@ -33,7 +31,7 @@
 
     {{form_end(profileForm)}}
 
-    <a href="{{ path('trip_home') }}"><button style="background-color: #FFDAB9" >Annuler</button></a>
+    <a href="{{ path('trip_home') }}" id="cancel-link"><button style="background-color: #3CB371" >Annuler</button></a>
         </div>
     </div>
 
