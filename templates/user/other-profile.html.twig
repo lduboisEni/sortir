@@ -5,7 +5,15 @@
     <div class="text center">
     <h2>{{user.pseudo}}</h2>
 
-    <img src="{{ asset('uploads/' ~user.image) }}">
+        {% if user.image %}
+
+            <img src="{{ asset('uploads/' ~user.image) }}" alt="photo de profil du participant">
+
+        {% else %}
+
+            <img src="{{ asset('img/tête_silhouette.jpg') }}" alt="photo de profil du participant">
+
+        {% endif %}
 
         <p>Prénom: {{user.firstName}}</p>
         <p>Nom: {{user.name}}</p>

@@ -13,7 +13,17 @@
     <div class="form-group row">
 
         <div class="form-group col-12 col-lg-4" >
-                <img src="{{ asset('uploads/' ~app.user.image)}}" id="profile-img">
+
+            {% if app.user.image %}
+
+                <img src="{{ asset('uploads/' ~app.user.image)}}" id="profile-img" alt="photo de mon profil">
+
+            {% else %}
+
+                <img src="{{ asset('img/tête_silhouette.jpg') }}" alt="photo de mon profil">
+
+            {% endif %}
+
         </div>
 
     {{form_start(profileForm)}}

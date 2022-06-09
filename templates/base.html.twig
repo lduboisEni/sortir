@@ -15,14 +15,21 @@
 <div class="p-2">
 <header style="background-color:#FFFAFA">
     {% block header %}
+
+        <div class="row container-fluid">
+            <div class="pb-1">
+                <img class="rounded float-left" style="width:20%" src="{{asset('img/logo_sortir.png')}}" id="logo" alt="logo du site"/>
+            </div>
+            <div class="pt-5 col-1">
+                <h2 style="font-size: 400%">Sortir.com</h2>
+            </div>
+        </div>
+
         {# récupération des messages flash de nos différentes pages #}
         {# boucle pour récupérer plusieurs messages si besoin #}
         {% for message in app.flashes('message') %}
             <h3>{{ message }}</h3>
         {% endfor %}
-
-    <h2>Sortir.com</h2>
-
     {% endblock %}
 </header>
 
