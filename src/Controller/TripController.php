@@ -167,11 +167,16 @@ class TripController extends AbstractController
     #[Route('/edit/{id}', name: 'edit')]
     public function edit($id, TripService $tripService, TripRepository $tripRepository, StateRepository $stateRepository, PlaceRepository $placeRepository, Request $request): Response
     {
+
         //initialisation du message add
         $message = "";
 
         //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
+
+        $user = $this->getUser();
+
+        if($user === $trip->getOrganiser()) {}
 
         //création du formulaire
         $tripForm2 = $this->createForm(TripType::class, $trip);

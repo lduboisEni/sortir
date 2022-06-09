@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification du profil de {{ app.user.firstname}} {{ app.user.name }}{% endblock %}
-{%block stylesheet%}{{parent()}}
-<link rel="stylesheet" href="{{asset('css/editprofileCSS.css')}}">
-{%endblock%}
+{% block title %}Modification du profil de {{ app.user.firstname }} {{ app.user.name }}{% endblock %}
+{% block stylesheet %}{{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/editprofileCSS.css') }}">
+{% endblock %}
 {% block main %}
 
     <div class="text-center">
-        <h1>Modification du profil de {{ app.user.firstname}} {{ app.user.name }}</h1>
+        <h1>Modification du profil de {{ app.user.firstname }} {{ app.user.name }}</h1>
     </div>
 
     <div class="form-group row">
@@ -26,22 +26,23 @@
 
         </div>
 
-    {{form_start(profileForm)}}
+            {{ form_start(profileForm) }}
+            <div class="col-12 col-lg-8">
 
-        <div class="form group col-8">
-            {{ form_row(profileForm.pseudo) }}
-            {{ form_row(profileForm.name) }}
-            {{ form_row(profileForm.firstname) }}
-            {{ form_row(profileForm.phoneNumber) }}
-            {{ form_row(profileForm.email) }}
-            {{ form_row(profileForm.password) }}
-            {{ form_row(profileForm.image) }}
-            {{ form_row(profileForm.campus) }}
-            {{ form_row(profileForm.Enregistrer) }}
+                {{ form_row(profileForm.pseudo) }}
+                {{ form_row(profileForm.name) }}
+                {{ form_row(profileForm.firstname) }}
+                {{ form_row(profileForm.phoneNumber) }}
+                {{ form_row(profileForm.email) }}
+                {{ form_row(profileForm.password) }}
+                {{ form_row(profileForm.image) }}
+                {{ form_row(profileForm.campus) }}
+                {{ form_row(profileForm.Enregistrer) }}
+                {{ form_end(profileForm) }}
 
-    {{form_end(profileForm)}}
-
-    <a href="{{ path('trip_home') }}" id="cancel-link"><button style="background-color: #3CB371" >Annuler</button></a>
+                <button style="background-color: #3CB371" onclick="location.href='{{ path('trip_home') }}'"
+                        id="cancel-button">Annuler
+                </button>
         </div>
     </div>
 

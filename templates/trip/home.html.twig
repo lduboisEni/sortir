@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} - Accueil{% endblock %}
+    {% block stylesheet %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('css/homeStyle.css') }}">
+    {% endblock %}
 
 {% block main %}
     <div id="date-user-pseudo">
@@ -14,33 +18,33 @@
 
         <div class="form-group row">
 
-        <div class="form-group col-5">
-            {{form_row(searchForm.campus)}}
-            {{form_row(searchForm.nameContain)}}
-            {{form_row(searchForm.begindate)}}
-            {{form_row(searchForm.enddate)}}
-        </div>
+            <div class="form-group col-5">
+                {{ form_row(searchForm.campus) }}
+                {{ form_row(searchForm.nameContain) }}
+                {{ form_row(searchForm.begindate) }}
+                {{ form_row(searchForm.enddate) }}
+            </div>
 
             <div class="form-group col-1"></div>
 
-        <div class="form-group col-5">
-            {{form_row(searchForm.isOrganiser)}}
-            {{form_row(searchForm.isRegistered)}}
-            {{form_row(searchForm.isNotRegistered)}}
-            {{form_row(searchForm.isPassed)}}
-        </div>
+            <div class="form-group col-5">
+                {{ form_row(searchForm.isOrganiser) }}
+                {{ form_row(searchForm.isRegistered) }}
+                {{ form_row(searchForm.isNotRegistered) }}
+                {{ form_row(searchForm.isPassed) }}
+            </div>
 
         </div>
 
-        {{form_row(searchForm.Rechercher)}}
+        {{ form_row(searchForm.Rechercher) }}
 
         {{ form_end(searchForm) }}
     </div>
 
     <div class="row">
-    {% for trip in tripList %}
-        <div class="p-2">
-        <div class="card border-warning mb-3 col-2" style="max-width: 20rem; min-width: 20rem ;height: 320px">
+        {% for trip in tripList %}
+            <div class="p-2">
+                <div class="card border-warning mb-3 col-2" style="max-width: 20rem; min-width: 20rem ;height: 320px">
 
             <h4>{{ trip.name }}</h4>
 
@@ -82,7 +86,7 @@
             {% endif %}
 
             {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
-                <button style="background-color: #FFFFE0" onclick="location.href='{{ path ('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
+                <button style="background-color: #FFFFE0" onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
                     Publier
                 </button>
                 <button style="background-color: #FFF0F5" onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">Modifier

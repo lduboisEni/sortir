@@ -173,7 +173,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "sylvaine";
+        $plainPassword = "Sylvaine29";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
