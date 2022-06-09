@@ -1,5 +1,5 @@
 #profile-img{
-    border-radius: 8px;
+    border-radius: 20px;
     max-width: 80%;
     display: flex;
     align-items: center;
@@ -27,3 +27,8 @@
     overflow: visible;
 }
 
+@media (max-width: 991px) {
+    #profile-img{
+        max-width: 50%;
+    }
+}
