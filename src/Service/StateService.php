@@ -2,51 +2,93 @@
 
 namespace App\Service;
 
+use App\Repository\StateRepository;
+use App\Repository\TripRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+
 class StateService
 {
-//
-//    //modification de l'état des sortie
-//    //je récupère toutes les sorties
-//$allTrips = $tripRepository->findAll();
-//
-//    //je récupère la date du jour
-//$now = new \DateTime('now');
-//
-//
-//foreach ($allTrips as $trip) {
-//if ($trip->getState()->getDescription() != "Créée") {
-//    //je calcule la dateTime à laquelle se termine la sortie (date de début + durée grâce à la fonction modify())
-//$endTimeTrip = $trip->getStartTime()->modify('+' . $trip->getLenght() . 'minute');
-//dump("1");
-//if ($trip->getRegistrationTimeLimit()>$now) {
-//$state = $stateRepository->findOneBy(array('description'=>"Ouverte"));
-//$trip->setState($state);
-//$tripRepository->add($trip,true);
-//} dump("2");
-//if ($trip->getRegistrationTimeLimit() < $now) {
-//    $state = $stateRepository->findOneBy(array('description' => "Clôturée"));
-//    $trip->setState($state);
-//    $tripRepository->add($trip, true);
-//}
-//dump("3");
-//if ($trip->getStartTime() <= $now && $endTimeTrip <= $now) {
-//    $state = $stateRepository->findOneBy(array('description' => "En cours"));
-//    $trip->setState($state);
-//    $tripRepository->add($trip, true);
-//}
-//dump("4");
-//if ($endTimeTrip < $now) {
-//    $state = $stateRepository->findOneBy(array('description' => "Terminée"));
-//    $trip->setState($state);
-//    $tripRepository->add($trip, true);
-//}
-//dump("5");
-//if ($endTimeTrip->modify('+1 month') >= $now) {
-//    $state = $stateRepository->findOneBy(array('description' => "Historisée"));
-//    $trip->setState($state);
-//    $tripRepository->add($trip, true);
-//}
-//dump("6");
-//}
-//}
+    private TripRepository $tripRepository;
+
+    public function __construct(EntityManagerInterface $manager, TripRepository $tripRepository, StateRepository $stateRepository)
+    {
+        $this->manager = $manager;
+        $this->tripRepository = $tripRepository;
+        $this->stateRepository = $stateRepository;
+    }
+
+    //modification de l'état des sortie
+    public function updateState()
+    {
+
+        //je récupère toutes les sorties
+        $allTrips = $this->tripRepository->findAll();
+
+        //je récupère la date du jour
+        $now = new \DateTime('now');
+
+        foreach ($allTrips as $trip) {
+
+            //récupération de la date du début de la sortie avec un clone
+            $endTimeTrip = clone $trip->getStartTime();
+            //calcul la dateTime fin de sortie (date de début + durée grâce à la fonction modify())
+            $endTimeTrip->modify('+' . $trip->getLenght() . 'minute');
+
+            //récupération de la fin de la sortie avec un clone
+            $archived = clone $endTimeTrip;
+            //ajout d'un mois pour l'archivage
+            $archived->modify('+1 month');
+
+
+            //Si la date limite d'inscription est passée et
+            //que le statut est "Ouverte" et défférent de "Créée"
+            //alors setState=>"Clôturée"
+            if ($trip->getRegistrationTimeLimit() < $now &&
+                $trip->getState()->getDescription() === "Ouverte" &&
+                    $trip->getState()->getDescription() !== "Créée") {
+
+                $state = $this->stateRepository->findOneBy(array('description' => "Clôturée"));
+                $trip->setState($state);
+            }
+
+            //Si la date de début est passée mais
+            //que la date de fin n'est pas passée avec statut "Ouvert" ou "Clôturée"
+            // et différent de "Créée" alors setState=>"En cours"
+            if ($trip->getStartTime() <= $now &&
+                $now >= $endTimeTrip &&
+                $trip->getState()->getDescription() !== "Créée" &&
+                ($trip->getState()->getDescription() === "Ouverte" ||
+                $trip->getState()->getDescription() === "Clôturée")
+                ) {
+
+                $state = $this->stateRepository->findOneBy(array('description' => "En cours"));
+                $trip->setState($state);
+            }
+
+            //Si la date de fin de la sortie est passée et
+            //que le statut est "Ouvert" et différent de "Créée" => "Passée"
+            if ($endTimeTrip < $now &&
+                $trip->getState()->getDescription() === "En cours" &&
+                $trip->getState()->getDescription() !== "Créée") {
+
+                $state = $this->stateRepository->findOneBy(array('description' => "Passée"));
+                $trip->setState($state);
+            }
+
+            //Si la date de fin de la sortie + 1 mois est passée
+            //et si le statut est différent de "Créée" et égal à Passée ou Annulée
+            //alors setState=>"historisée"
+            if ($archived <= $now &&
+                $trip->getState()->getDescription() !== "Créée" &&
+                ($trip->getState()->getDescription() === "Passée" ||
+                    $trip->getState()->getDescription() === "Annulée" )) {
+
+                $state = $this->stateRepository->findOneBy(array('description' => "Historisée"));
+                $trip->setState($state);
+            }
+            $this->manager->persist($trip);
+            $this->manager->flush();
+        }
+    }
 }

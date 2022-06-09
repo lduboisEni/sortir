@@ -37,8 +37,7 @@ class AppFixtures extends Fixture
         $this->addUsers($manager);
         $this->addStates($manager);
         $this->addPlaces($manager);
-        //$this->addTrips();
-
+        $this->addTrips($manager);
 
     }
 
@@ -108,7 +107,7 @@ class AppFixtures extends Fixture
         //je crée 10 lieux
         for ($i = 0; $i <= 10; $i++) {
 
-        $place = new Place();
+            $place = new Place();
 
         $place
             ->setCity($this->faker->randomElement($cities))
@@ -116,6 +115,7 @@ class AppFixtures extends Fixture
             ->setStreet($this->faker->streetName)
             ->setLat($this->faker->latitude)
             ->setLongitude($this->faker->longitude);
+
 
         $manager->persist($place);
         }
@@ -155,7 +155,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "LeaDubois7";
+        $plainPassword = "lea";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
@@ -173,7 +173,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "Sylvaine20";
+        $plainPassword = "Sylvaine29";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
@@ -191,7 +191,7 @@ class AppFixtures extends Fixture
 
         $user = new User();
 
-        $plainPassword = "Soline35";
+        $plainPassword = "soline";
         $hashed = $this->hasher->hashPassword($user, $plainPassword);
 
         $user
@@ -239,9 +239,40 @@ class AppFixtures extends Fixture
     }
 
     //méthode pour ajouter des sorties
-    public function addTrips()
+    public function addTrips(ObjectManager $manager)
     {
+        $campusList = $manager->getRepository(Campus::class)->findAll();
+        $placeList = $manager->getRepository(Place::class)->findAll();
+        $userList = $manager->getRepository(User::class)->findAll();
+        $state = $manager->getRepository(State::class)->findOneBy(array('description' => "Ouverte"));
+        $nameTripList =
+            ["Boire un verre", "Direction la côte!", "Go match de basket", "Aujourd'hui c'est piscine!",
+                "Go Hellfest", "Faire un gros pic-nique", "Tournoi de palet", "Sortie disc golf (demander à Léa)", "La ribouldingue!"];
 
+
+        for ($j = 0; $j <= 30; $j++) {
+
+            $trip = new Trip();
+            $time = $this->faker->dateTimeBetween('-60 days', '+ 30 days');
+            $timeLimit = $this->faker->dateTimeBetween('-60 days', $time);
+            $user = $this->faker->randomElement($userList);
+
+            $trip
+                ->setState($state)
+                ->setOrganiser($user)
+                ->setCampus($this->faker->randomElement($campusList))
+                ->setPlace($this->faker->randomElement($placeList))
+                ->setName($this->faker->randomElement($nameTripList))
+                ->setStartTime($time)
+                ->setLenght($this->faker->numberBetween(1, 300))
+                ->setRegistrationTimeLimit($timeLimit)
+                ->setMaxRegistration($this->faker->numberBetween(1, 30))
+                ->setTripInfos($this->faker->sentence(11))
+                ->addUser($user);
+
+            $manager->persist($trip);
+        }
+        $manager->flush();
     }
 
 }

@@ -8,20 +8,20 @@
 
         <div class="col-6">
             <p>Nom de la sortie: {{trip.name}}</p>
-            <p>Date et heure de la sortie: {{trip.startTime|date("d-m-Y H:i")}}</p>
-            <p>Date limite d'inscription: {{trip.registrationTimeLimit|date("d-m-Y")}}</p>
+            <p>Date et heure de la sortie: {{trip.startTime|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY H:m")}}</p>
+            <p>Date limite d'inscription: {{trip.registrationTimeLimit|format_datetime(locale='fr',pattern="EEEE dd MMMM YYYY")}}</p>
             <p>Nombre de places: {{trip.maxRegistration}}</p>
             <p>Durée: {{trip.lenght}}</p>
             <p>Description et infos: {{trip.tripInfos}}</p>
         </div>
 
         <div class="col-6">
-            <p>Campus: </p>
-            <p>Lieu: </p>
-            <p>Rue: </p>
-            <p>Code postal: </p>
-            <p>Latitude: </p>
-            <p>Longitude: </p>
+            <p>Campus: {{trip.campus.name}}</p>
+            <p>Lieu: {{trip.place.name}}</p>
+            <p>Rue: {{trip.place.street}}</p>
+            <p>Code postal: {{trip.place.city.cp}}</p>
+            <p>Latitude: {{trip.place.lat}}</p>
+            <p>Longitude: {{trip.place.longitude}}</p>
         </div>
 
     </div>

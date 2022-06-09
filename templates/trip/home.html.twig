@@ -46,71 +46,63 @@
             <div class="p-2">
                 <div class="card border-warning mb-3 col-2" style="max-width: 20rem; min-width: 20rem ;height: 320px">
 
-                    <h4>{{ trip.name }}
-                        {% if(app.user in trip.users) %}
-                            - Inscrit
-                        {% endif %}
-                    </h4>
-                    <p>Sortie : {{ trip.state.description }}</p>
-                    <p>Organisateur : {{ trip.organiser.firstname }} {{ trip.organiser.name }}</p>
-                    <p>Date de la sortie : le {{ trip.startTime|date("d M Y") }} à {{ trip.startTime|date("H") }}
-                        h{{ trip.startTime|date("i") }}</p>
-                    <p>Clôture des inscriptions : {{ trip.registrationTimeLimit|date("d M Y") }}</p>
-                    <p>Nombre d'inscrits : {{ trip.users.count() }}/{{ trip.maxRegistration }}</p>
+            <h4>{{ trip.name }}</h4>
 
-
-                    {# affichage du bouton "afficher la sortie" en fonction de l'état #}
-                    {% if (trip.state.description != "Créée") %}
-                        <button style="background-color: #C0FFC4"
-                                onclick="location.href= '{{ path('trip_display', {'id' : trip.id}) }}'"
-                                id="displayTrip">
-                            Afficher
-                        </button>
-                    {% endif %}
-
-                    {# affichage du bouton "s'inscrire à la sortie" #}
-                    {% if (app.user not in trip.users) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
-                        <button style="background-color: #F0E68C"
-                                onclick="location.href='{{ path('trip_subscribe', {'id' : trip.id}) }}'" id="suscribe">
-                            S'incrire
-                        </button>
-                    {% endif %}
-
-
-                    {% if(app.user in trip.users) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or trip.state.description == "Clôturée") %}
-                        <button style="background-color: #FFEFD5"
-                                onclick="location.href='{{ path('trip_unsubscribe', {'id' : trip.id}) }}'"
-                                id="unSubscribe">
-                            Se désinscrire
-                        </button>
-                    {% endif %}
-
-                    {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
-                        <button style="background-color: #FFFFE0"
-                                onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
-                            Publier
-                        </button>
-                        <button style="background-color: #FFF0F5"
-                                onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">
-                            Modifier
-                        </button>
-                    {% endif %}
-
-                    {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Ouverte") %}
-                        <button style="background-color: #FFDAB9"
-                                onclick="location.href='{{ path('trip_cancel', {'id' : trip.id}) }}'" id="cancelTrip">
-                            Annuler
-                        </button>
-                    {% endif %}
+            <div class="row">
+                <div class="text-start col-6">
+                <p>Sortie : {{ trip.state.description }}</p>
                 </div>
+                    {% if(app.user in trip.users) %}
+                        <div class="col-6 text-end"><span class="badge rounded-pill bg-warning"> Vous êtes inscrit(e).</span></div>
+                    {% endif %}
+                </p>
             </div>
-        {% endfor %}
+            <p>Organisateur : {{ trip.organiser.firstname }} {{ trip.organiser.name }}</p>
+            <p>Date de la sortie : le {{ trip.startTime|format_datetime(locale='fr',pattern="dd MMMM YYYY") }} à {{ trip.startTime|date("H") }}
+                h{{ trip.startTime|date("i") }}</p>
+            <p>Clôture des inscriptions : {{ trip.registrationTimeLimit|format_datetime(locale='fr',pattern="dd MMMM YYYY") }}</p>
+            <p>Nombre d'inscrits : {{ trip.users.count() }}/{{ trip.maxRegistration }}</p>
+
+
+            {# affichage du bouton "afficher la sortie" en fonction de l'état #}
+            {% if (trip.state.description != "Créée") %}
+                <button style="background-color: #C0FFC4" onclick="location.href= '{{ path('trip_display', {'id' : trip.id}) }}'" id="displayTrip">
+                    Afficher
+                </button>
+            {% endif %}
+
+            {# affichage du bouton "s'inscrire à la sortie" #}
+            {% if (app.user not in trip.users) and (trip.state.description == "Ouverte") and (trip.users.count() != trip.maxRegistration) and (app.user.id != trip.organiser.id) %}
+                <button style="background-color: #F0E68C" onclick="location.href='{{ path('trip_subscribe', {'id' : trip.id}) }}'" id="suscribe">
+                    S'incrire
+                </button>
+            {% endif %}
+
+
+            {% if(app.user in trip.users) and (app.user.id != trip.organiser.id) and (trip.state.description == "Ouverte" or trip.state.description == "Clôturée") %}
+                <button style="background-color: #FFEFD5" onclick="location.href='{{ path('trip_unsubscribe', {'id' : trip.id}) }}'" id="unSubscribe">
+                    Se désinscrire
+                </button>
+            {% endif %}
+
+            {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Créée") %}
+                <button style="background-color: #FFFFE0" onclick="location.href='{{ path('trip_publish', {'id' : trip.id}) }}'" id="publishTrip">
+                    Publier
+                </button>
+                <button style="background-color: #FFF0F5" onclick="location.href='{{ path('trip_edit', {'id' : trip.id}) }}'" id="editTrip">Modifier
+                </button>
+            {% endif %}
+
+            {% if (app.user.id == trip.organiser.id) and (trip.state.description == "Ouverte") %}
+                <button style="background-color: #FFDAB9" onclick="location.href='{{ path('trip_cancel', {'id' : trip.id}) }}'" id="cancelTrip">Annuler</button>
+            {% endif %}
+        </div>
+        </div>
+    {% endfor %}
     </div>
 
     <div>
-        <button type="button" class="btn" style="background-color: #3CB371"
-                onclick="location.href= '{{ path('trip_create') }}'" id="createTrip">Créer une sortie
-        </button>
+        <button type="button" class="btn" style="background-color: #3CB371" onclick="location.href= '{{ path('trip_create') }}'" id="createTrip">Créer une sortie</button>
     </div>
 
 {% endblock %}

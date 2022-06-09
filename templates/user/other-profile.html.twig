@@ -5,12 +5,21 @@
     <div class="text center">
     <h2>{{user.pseudo}}</h2>
 
-    <img src="{{ asset('/uploads/' ~ user.image) }}">
-    <p>Prénom: {{user.firstName}}</p>
-    <p>Nom: {{user.name}}</p>
-    <p>Téléphone: {{user.phoneNumber}}</p>
-    <p>Email: {{user.email}}</p>
-    <p>Campus: {{user.campus.name}}</p>
+        {% if user.image %}
+
+            <img src="{{ asset('uploads/' ~user.image) }}" alt="photo de profil du participant">
+
+        {% else %}
+
+            <img src="{{ asset('img/tête_silhouette.jpg') }}" alt="photo de profil du participant">
+
+        {% endif %}
+
+        <p>Prénom: {{user.firstName}}</p>
+        <p>Nom: {{user.name}}</p>
+        <p>Téléphone: {{user.phoneNumber}}</p>
+        <p>Email: {{user.email}}</p>
+        <p>Campus: {{user.campus.name}}</p>
 
     <a href="{{path('trip_home')}}"><input type="button" value="Retour"></a>
     </div>
