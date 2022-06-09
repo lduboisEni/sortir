@@ -176,8 +176,6 @@ class TripController extends AbstractController
 
         $user = $this->getUser();
 
-        if($user === $trip->getOrganiser()) {}
-
         //création du formulaire
         $tripForm2 = $this->createForm(TripType::class, $trip);
         $tripForm2->handleRequest($request);
@@ -214,16 +212,27 @@ class TripController extends AbstractController
             $this->addFlash('message', $message);
             return $this->redirectToRoute('trip_home');
         }
+
+        if($user === $trip->getOrganiser()) {
+
         return $this->render('trip/edit.html.twig',[
             'tripForm' => $tripForm2->createView(),
             'trip' => $trip,
             'id' => $id
-        ]);
+            ]);
+        }
+        else {
+            $this->addFlash('message', "Vous n'êtes pas l'organisateur de cette sortie !!");
+            return $this->redirectToRoute('trip_home');
+            }
     }
 
     #[Route('/cancel/{id}', name: 'cancel')]
     public function cancel($id, TripRepository $tripRepository, StateRepository $stateRepository, Request $request): Response
     {
+        //récupération de l'utlisateur
+        $user = $this->getUser();
+
         //récupération de la sortie cliquée
         $trip = $tripRepository->find($id);
 
@@ -249,10 +258,17 @@ class TripController extends AbstractController
             return $this->redirectToRoute('trip_home');
         }
 
+        if($user === $trip->getOrganiser()) {
+
         return $this->render('trip/cancel.html.twig', [
             'id' => $id,
             'trip' => $trip,
         ]);
+        }
+        else {
+            $this->addFlash('message', "Vous n'êtes pas l'organisateur de cette sortie !!");
+            return $this->redirectToRoute('trip_home');
+        }
     }
 
     #[Route('/delete/{id}', name: 'delete')]

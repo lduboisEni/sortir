@@ -27,9 +27,13 @@
 
         {# récupération des messages flash de nos différentes pages #}
         {# boucle pour récupérer plusieurs messages si besoin #}
-        {% for message in app.flashes('message') %}
-            <h3>{{ message }}</h3>
-        {% endfor %}
+
+            {% for message in app.flashes('message') %}
+
+                <h3 class="text-danger">{{ message }}</h3>
+
+            {% endfor %}
+
     {% endblock %}
 </header>
 
