@@ -22,77 +22,62 @@ a{
 /***********************************************************
 * Form
 ************************************************************/
-
-
-
-
-.nav {
-    height: 50px;
-    width: 100%;
-    background-color: #4d4d4d;
-    position: relative;
+a.navbar-brand{
+    color: white;
 }
 
-.nav > .nav-header {
-    display: inline;
+a.nav-link{
+    color: white;
 }
 
-.nav > .nav-header > .nav-title {
+.navbar a:hover {
+    color: #333;
+}
+.navbar-brand {
     display: inline-block;
-    font-size: 22px;
-    color: #fff;
-    padding: 10px 10px 10px 10px;
+    position: relative;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 30px;
 }
 
-.nav > .nav-btn {
-    display: none;
+.navbar-dark .navbar-brand:hover {
+    color: #333;
 }
 
-.nav > .nav-links {
+.collapse.in > .nav-link {
     display: inline;
     float: right;
     font-size: 18px;
 }
-
-.nav > .nav-links > a {
+.collapse.in > a.nav-link {
     display: inline-block;
     padding: 13px 10px 13px 10px;
     text-decoration: none;
     color: #efefef;
 }
 
-.nav > .nav-links > a:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-}
 
-.nav > #nav-check {
-    display: none;
-}
-
-@media (max-width:600px) {
-    .nav > .nav-btn {
+@media (max-width:900px) {
+    button.navbar-toggler {
         display: inline-block;
-        position: absolute;
+        position: relative;
         right: 0px;
         top: 0px;
     }
-    .nav > .nav-btn > label {
+    button.navbar-toggler > .navbar-toggler-icon {
         display: inline-block;
-        width: 50px;
-        height: 50px;
+        width: 1.5em;
+        height: 1.5em;
         padding: 13px;
     }
-    .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+    button.navbar-toggler:hover, button.navbar-toggler:focus {
         background-color: rgba(0, 0, 0, 0.3);
     }
-    .nav > .nav-btn > label > span {
-        display: block;
-        width: 25px;
-        height: 10px;
-        border-top: 2px solid #eee;
-    }
-    .nav > .nav-links {
-        position: absolute;
+
+    .collapse.in {
+        position: relative;
         display: block;
         width: 100%;
         background-color: #333;
@@ -102,32 +87,17 @@ a{
         top: 50px;
         left: 0px;
     }
-    .nav > .nav-links > a {
+    .collapse.in > a.nav-link {
         display: block;
         width: 100%;
     }
-    .nav > #nav-check:not(:checked) ~ .nav-links {
+    button.navbar-toggler:not(:focus) ~ .collapse.in > a.nav-link{
         height: 0px;
     }
-    .nav > #nav-check:checked ~ .nav-links {
+    button.navbar-toggler:focus ~ .collapse.in > a.nav-link {
         height: calc(100vh - 50px);
         overflow-y: auto;
     }
-}
-
-/*********************************************************/
-#navbarColor02 a:hover {
-    color: #333;
-}
-
-.collapse > .nav-header{
-    display: inline;
-}
-
-.collapse > .nav-header > .navbar-nav {
-    display: inline-block;
-    font-size: 30px;
-
 }
 
 .p-2 button{

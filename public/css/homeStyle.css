@@ -1,0 +1,5 @@
+@media (max-width: 991px) {
+    button#createTrip.btn{
+        display: none;
+    }
+}
