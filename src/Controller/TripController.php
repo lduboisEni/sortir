@@ -123,7 +123,7 @@ class TripController extends AbstractController
             if ($tripForm->get('publish')->isClicked()) {
 
                 //si la sortie est déjà créée on la publie
-                if($trip->getState() == "Créée") {
+                if($trip->getState() === "Créée") {
 
                     //appel à la fonction Publish du service Trip
                     $tripService->publish($trip->getId(), $tripRepository, $stateRepository);
@@ -134,7 +134,7 @@ class TripController extends AbstractController
                 } else {
 
                     //appel à la fonction Save du service Trip
-                    $tripService->save($trip->getId(), $tripRepository, $stateRepository);
+                    $tripService->save($trip, $tripRepository, $stateRepository);
 
                     //puis appel à la fonction Publish du service Trip
                     $tripService->publish($trip->getId(), $tripRepository, $stateRepository);
